@@ -30,7 +30,17 @@ class Promoted extends Model
      */
     public function section()
     {
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(Section::class,'section_id');
+    }
+
+    public function promotors()
+    {
+        return $this->belongsTo(Promotor::class);
+    }
+
+    public function municipal()
+    {
+        return $this->belongsTo(Municipal::class);
     }
 
     /**

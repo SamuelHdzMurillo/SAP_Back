@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Municipal;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class MunicipalController extends Controller
 {
@@ -13,7 +15,78 @@ class MunicipalController extends Controller
      */
     public function index()
     {
-        //
+        // Obtener todos los municipios con relaciones
+        $municipals = Municipal::with(['districts.sections.promotors', 'districts.sections.promoteds'])->get();
+
+        // Devolver los datos en formato JSON
+        return response()->json($municipals);
+    }
+
+    public function countPromovedsInDistrict($municipalId, $districtId)
+    {
+        $count = DB::table('promoteds')
+            ->join('sections', 'promoteds.section_id', '=', 'sections.id')
+            ->join('districts', 'sections.district_id', '=', 'districts.id')
+            ->join('municipals', 'districts.municipal_id', '=', 'municipals.id')
+            ->where('municipals.id', '=', $municipalId)
+            ->where('districts.id', '=', $districtId)
+            ->count();
+
+        return response()->json(['count' => $count]);
+    }
+
+    public function countPromovedsInAll()
+    {
+        $counts = DB::table('promoteds')
+            ->join('sections', 'promoteds.section_id', '=', 'sections.id')
+            ->join('districts', 'sections.district_id', '=', 'districts.id')
+            ->join('municipals', 'districts.municipal_id', '=', 'municipals.id')
+            ->select('municipals.name as municipal_name', 'districts.number as district_number', DB::raw('count(*) as promoved_count'))
+            ->groupBy('municipals.name', 'districts.number')
+            ->orderBy('municipals.name', 'asc')
+            ->orderBy('districts.number', 'asc')
+            ->get();
+
+        return response()->json(['counts' => $counts]);
+    }
+
+    public function countPromovedsInSections()
+    {
+        $counts = DB::table('promoteds')
+            ->join('sections', 'promoteds.section_id', '=', 'sections.id')
+            ->select('sections.number as section_number', DB::raw('count(*) as promoved_count'))
+            ->groupBy('sections.number')
+            ->orderBy('sections.number', 'asc')
+            ->get();
+
+        return response()->json(['counts' => $counts]);
+    }
+
+    public function countPromovedsInSectionsByDate()
+    {
+        $counts = DB::table('promoteds')
+            ->join('sections', 'promoteds.section_id', '=', 'sections.id')
+            ->select('sections.number as section_number', DB::raw('DATE(promoteds.created_at) as date'), DB::raw('count(*) as promoved_count'))
+            ->groupBy('sections.number', 'date')
+            ->orderBy('sections.number', 'asc')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        return response()->json(['counts' => $counts]);
+    }
+
+    public function countPromovedsInDistrictsByDate()
+    {
+        $counts = DB::table('promoteds')
+            ->join('sections', 'promoteds.section_id', '=', 'sections.id')
+            ->join('districts', 'sections.district_id', '=', 'districts.id')
+            ->select('districts.number as district_number', DB::raw('DATE(promoteds.created_at) as date'), DB::raw('count(*) as promoved_count'))
+            ->groupBy('districts.number', 'date')
+            ->orderBy('districts.number', 'asc')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        return response()->json(['counts' => $counts]);
     }
 
     /**

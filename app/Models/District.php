@@ -26,7 +26,7 @@ class District extends Model
         return $this->belongsTo(Municipal::class);
     }
 
-    public function section()
+    public function sections()
     {
         return $this->hasMany(Section::class);
     }

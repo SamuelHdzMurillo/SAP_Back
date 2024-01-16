@@ -55,5 +55,16 @@ class Promotor extends Authenticatable
         return $this->belongsTo(Municipal::class);
     }
 
+    public function promoteds()
+    {
+        return $this->hasMany(Promoted::class);
+    }
+
+    public function section()
+{
+    return $this->belongsTo(Section::class);
+}
+
+
     // Aquí puedes añadir otras relaciones o métodos personalizados si es necesario.
 }

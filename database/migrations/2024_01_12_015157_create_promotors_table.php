@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->foreignId("municipal_id")->constrained();
+            $table->foreignId("section_id")->constrained('sections');
             $table->timestamps();
         });
         

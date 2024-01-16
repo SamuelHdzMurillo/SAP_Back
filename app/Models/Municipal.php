@@ -33,6 +33,16 @@ class Municipal extends Model
         return $this->hasMany(Promoted::class);
     }
 
+    public function promoteds()
+    {
+        return $this->hasMany(Promoted::class);
+    }
+
+    public function sections()
+    {
+        return $this->hasMany(Section::class);
+    }
+
 
     // Aquí puedes agregar otras relaciones o lógica de negocio específica de tu modelo
 }

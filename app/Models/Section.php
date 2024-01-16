@@ -19,9 +19,14 @@ class Section extends Model
         return $this->belongsTo(District::class);
     }
 
-    public function promoted()
+    public function promoteds()
     {
         return $this->hasMany(Promoted::class);
+    }
+
+    public function promotors()
+    {
+        return $this->hasMany(Promotor::class);
     }
 
     // Aquí puedes añadir otras relaciones o métodos personalizados si es necesario.

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\PromotorController;
 use App\Http\Controllers\PromotedController;
+use App\Http\Controllers\MunicipalController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,4 +40,14 @@ Route::get('/promoted/{id}', [PromotedController::class, 'show']);
 Route::put('/promoted/{id}', [PromotedController::class, 'update']);
 Route::delete('/promoted/{id}', [PromotedController::class, 'destroy']);
 
+Route::get('/municipals', [MunicipalController::class, 'index']);
 
+Route::get('/municipals/{municipalId}/districts/{districtId}/promoveds/count', [MunicipalController::class, 'countPromovedsInDistrict']);
+
+Route::get('/municipals/districts/promoveds/count', [MunicipalController::class, 'countPromovedsInAll']);
+
+Route::get('/municipals/sections/promoveds/count', [MunicipalController::class, 'countPromovedsInSections']);
+
+Route::get('/municipals/sections/promoveds/count-by-date', [MunicipalController::class, 'countPromovedsInSectionsByDate']);
+
+Route::get('/municipals/districts/promoveds/count-by-date', [MunicipalController::class, 'countPromovedsInDistrictsByDate']);
