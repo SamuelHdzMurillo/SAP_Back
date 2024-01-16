@@ -62,9 +62,11 @@ class ProblemController extends Controller
      * @return JsonResponse
      */
     public function show(Problem $problem)
-    {
-        return response()->json(['data' => $problem]);
-    }
+{
+    $problem->load(['promoted.section.district.municipal']);
+
+    return response()->json(['data' => $problem]);
+}
 
     /**
      * Update the specified resource in storage.
