@@ -6,6 +6,7 @@ use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\PromotorController;
 use App\Http\Controllers\PromotedController;
 use App\Http\Controllers\MunicipalController;
+use App\Http\Controllers\ProblemController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -51,3 +52,12 @@ Route::get('/municipals/sections/promoveds/count', [MunicipalController::class, 
 Route::get('/municipals/sections/promoveds/count-by-date', [MunicipalController::class, 'countPromovedsInSectionsByDate']);
 
 Route::get('/municipals/districts/promoveds/count-by-date', [MunicipalController::class, 'countPromovedsInDistrictsByDate']);
+
+
+
+
+Route::get('/problems', [ProblemController::class, 'index']); // Listar todos los problemas
+Route::post('/problems', [ProblemController::class, 'store']); // Crear un nuevo problema
+Route::get('/problems/{problem}', [ProblemController::class, 'show']); // Mostrar un problema específico
+Route::put('/problems/{problem}', [ProblemController::class, 'update']); // Actualizar un problema
+Route::delete('/problems/{problem}', [ProblemController::class, 'destroy']); // Eliminar un problema
