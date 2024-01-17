@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string("latitude");
             $table->string("longitude");
             $table->foreignId("section_id")->constrained();
+            $table->foreignId("promotor_id")->constrained();
             $table->timestamps();
         });
     }

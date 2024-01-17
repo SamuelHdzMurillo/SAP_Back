@@ -26,7 +26,8 @@ class PromotedSeeder extends Seeder
                 'curp' => Str::random(18),
                 'latitude' => '19.432608',
                 'longitude' => '-99.133209',
-                'section_id' => 1, // Asegúrate de que este ID exista en la tabla 'sections'
+                'section_id' => 1, 
+                'promotor_id' => 1,// Asegúrate de que este ID exista en la tabla 'sections'
             ],
             [
                 'name' => 'Promovido',
@@ -40,7 +41,8 @@ class PromotedSeeder extends Seeder
                 'curp' => Str::random(18),
                 'latitude' => '19.432608',
                 'longitude' => '-99.133209',
-                'section_id' => 1, // Asegúrate de que este ID exista en la tabla 'sections'
+                'section_id' => 1,
+                'promotor_id' => 1, // Asegúrate de que este ID exista en la tabla 'sections'
             ],
         ];
 

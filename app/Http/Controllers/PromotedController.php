@@ -59,7 +59,8 @@ class PromotedController extends Controller
 'curp' => 'required|string|max:255',
 'latitude' => 'required|string|max:255',
 'longitude' => 'required|string|max:255',
-'section_id' => 'required|integer|exists:sections,id' // Asegúrate de que el ID de sección exista
+'section_id' => 'required|integer|exists:sections,id' ,
+'promotor_id' => 'required|integer|exists:sections,id'// Asegúrate de que el ID de sección exista
 ]);
 
 
@@ -97,7 +98,8 @@ class PromotedController extends Controller
         'curp' => 'string|max:255',
         'latitude' => 'numeric',
         'longitude' => 'numeric',
-        'section_id' => 'integer|exists:sections,id'
+        'section_id' => 'integer|exists:sections,id',
+        'promotor_id' => 'integer|exists:sections,id'
     ];
 
     $validatedData = $request->validate($rules);

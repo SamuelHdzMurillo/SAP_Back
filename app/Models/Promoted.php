@@ -22,7 +22,8 @@ class Promoted extends Model
         'curp',
         'latitude',
         'longitude',
-        'section_id'
+        'section_id',
+        'promotor_id'
     ];
 
     /**
