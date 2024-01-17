@@ -7,6 +7,7 @@ use App\Http\Controllers\PromotorController;
 use App\Http\Controllers\PromotedController;
 use App\Http\Controllers\MunicipalController;
 use App\Http\Controllers\ProblemController;
+use App\Http\Controllers\CatalogController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -61,3 +62,9 @@ Route::post('/problems', [ProblemController::class, 'store']); // Crear un nuevo
 Route::get('/problems/{problem}', [ProblemController::class, 'show']); // Mostrar un problema específico
 Route::put('/problems/{problem}', [ProblemController::class, 'update']); // Actualizar un problema
 Route::delete('/problems/{problem}', [ProblemController::class, 'destroy']); // Eliminar un problema
+
+
+
+Route::get('/catalog/municipal', [CatalogController::class, 'MunicipalSelect']);
+Route::get('/catalog/district', [CatalogController::class, 'DistrictSelect']);
+Route::get('/catalog/section', [CatalogController::class, 'SectioSelect']);
