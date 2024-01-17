@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\PromotedImport;
+use App\Exports\PromotedExport;
 
 
 class PromotedController extends Controller
@@ -34,6 +35,13 @@ class PromotedController extends Controller
 
         return response()->json(['message' => 'Datos del archivo Excel mostrados con éxito']);
     }
+
+    public function export() 
+    {
+        return Excel::download(new PromotedExport, 'Promovidos.xlsx');
+    }
+
+
     /**
      * Guarda un nuevo registro Promoted.
      */

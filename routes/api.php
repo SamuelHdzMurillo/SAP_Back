@@ -42,19 +42,16 @@ Route::get('/promoted/{id}', [PromotedController::class, 'show']);
 Route::put('/promoted/{id}', [PromotedController::class, 'update']);
 Route::delete('/promoted/{id}', [PromotedController::class, 'destroy']);
 
+
+Route::post('/upload-excel', [PromotedController::class, 'uploadExcel']);
+Route::get('/export-excel', [PromotedController::class, 'export']);
+
 Route::get('/municipals', [MunicipalController::class, 'index']);
-
 Route::get('/municipals/{municipalId}/districts/{districtId}/promoveds/count', [MunicipalController::class, 'countPromovedsInDistrict']);
-
 Route::get('/municipals/districts/promoveds/count', [MunicipalController::class, 'countPromovedsInAll']);
-
 Route::get('/municipals/sections/promoveds/count', [MunicipalController::class, 'countPromovedsInSections']);
-
 Route::get('/municipals/sections/promoveds/count-by-date', [MunicipalController::class, 'countPromovedsInSectionsByDate']);
-
 Route::get('/municipals/districts/promoveds/count-by-date', [MunicipalController::class, 'countPromovedsInDistrictsByDate']);
-
-
 
 
 Route::get('/problems', [ProblemController::class, 'index']); // Listar todos los problemas
@@ -70,4 +67,4 @@ Route::get('/catalog/district', [CatalogController::class, 'DistrictSelect']);
 Route::get('/catalog/section', [CatalogController::class, 'SectioSelect']);
 
 
-Route::post('/upload-excel', [PromotedController::class, 'uploadExcel']);
+
