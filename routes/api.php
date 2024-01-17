@@ -68,3 +68,6 @@ Route::delete('/problems/{problem}', [ProblemController::class, 'destroy']); // 
 Route::get('/catalog/municipal', [CatalogController::class, 'MunicipalSelect']);
 Route::get('/catalog/district', [CatalogController::class, 'DistrictSelect']);
 Route::get('/catalog/section', [CatalogController::class, 'SectioSelect']);
+
+
+Route::post('/upload-excel', [PromotedController::class, 'uploadExcel']);

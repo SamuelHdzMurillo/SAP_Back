@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Promoted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\PromotedImport;
+
 
 class PromotedController extends Controller
 {
@@ -17,6 +20,20 @@ class PromotedController extends Controller
         return response()->json($promoteds);
     }
 
+    public function uploadExcel(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        $file = $request->file('file');
+        $data = Excel::toArray(new PromotedImport, $file);
+
+        // Aquí puedes acceder y mostrar los datos antes de importarlos
+        // $data contiene los datos del archivo Excel en una matriz
+
+        return response()->json(['message' => 'Datos del archivo Excel mostrados con éxito']);
+    }
     /**
      * Guarda un nuevo registro Promoted.
      */
@@ -32,8 +49,8 @@ class PromotedController extends Controller
             'adress' => 'required|string|max:255',
             'electoral_key' => 'required|string|max:255',
 'curp' => 'required|string|max:255',
-'latitude' => 'required|numeric',
-'longitude' => 'required|numeric',
+'latitude' => 'required|string|max:255',
+'longitude' => 'required|string|max:255',
 'section_id' => 'required|integer|exists:sections,id' // Asegúrate de que el ID de sección exista
 ]);
 
