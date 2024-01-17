@@ -21,17 +21,17 @@ class PromotedController extends Controller
         return response()->json($promoteds);
     }
 
-    public function uploadExcel(Request $request)
+    public function uploadExcel(Request $request, $promotorId)
     {
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
 
         $file = $request->file('file');
-        $data = Excel::toArray(new PromotedImport, $file);
+        $data = Excel::toArray(new PromotedImport($promotorId), $file);
 
-        // Aquí puedes acceder y mostrar los datos antes de importarlos
-        // $data contiene los datos del archivo Excel en una matriz
+        // $data contiene los datos del archivo Excel en una matriz,
+        // y cada fila debería incluir el valor de $userId en el campo "user_id"
 
         return response()->json(['message' => 'Datos del archivo Excel mostrados con éxito']);
     }
