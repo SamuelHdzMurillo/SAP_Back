@@ -14,27 +14,27 @@ class PromotorController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    // Consulta para obtener todos los promotores junto con las relaciones ansiosamente cargadas
-    $promotores = Promotor::with('municipal.districts', 'section.promoteds')->get();
+    {
+        // Consulta para obtener todos los promotores junto con las relaciones ansiosamente cargadas
+        $promotores = Promotor::with('municipal.districts', 'section.promoteds')->get();
 
-    if ($promotores->isEmpty()) {
-        return response()->json(['message' => 'No se encontraron promotores'], 404);
+        if ($promotores->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron promotores'], 404);
+        }
+
+        return response()->json($promotores);
     }
+    public function showPromoteds($promotorId)
+    {
+        try {
+            $promotor = Promotor::findOrFail($promotorId);
+            $promoteds = $promotor->getPromoteds();
 
-    return response()->json($promotores);
-}
-public function showPromoteds($promotorId)
-{
-    try {
-        $promotor = Promotor::findOrFail($promotorId);
-        $promoteds = $promotor->getPromoteds();
-
-        return response()->json(['promotor' => $promotor, 'promoteds' => $promoteds]);
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'No se encontró el promotor'], 404);
+            return response()->json(['promotor' => $promotor, 'promoteds' => $promoteds]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'No se encontró el promotor'], 404);
+        }
     }
-}
 
 
     /**
@@ -42,7 +42,7 @@ public function showPromoteds($promotorId)
      */
     public function store(Request $request)
     {
-        
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'email' => 'required|email|unique:promotors,email',
@@ -60,7 +60,7 @@ public function showPromoteds($promotorId)
             return response()->json($validator->errors(), 400);
         }
 
-        
+
 
         $promotor = Promotor::create($validator->validated());
         return response()->json($promotor, 201);
@@ -73,11 +73,11 @@ public function showPromoteds($promotorId)
     {
         // Busca un promotor por su ID junto con todas las relaciones cargadas ansiosamente.
         $promotor = Promotor::with('municipal.districts',  'section.promoteds')->find($id);
-    
+
         if (!$promotor) {
             return response()->json(['message' => 'Promotor no encontrado'], 404);
         }
-    
+
         return response()->json($promotor);
     }
 
@@ -119,7 +119,7 @@ public function showPromoteds($promotorId)
         if (is_null($promotor)) {
             return response()->json(['message' => 'Promotor no encontrado'], 404);
         }
-        
+
         $promotor->delete();
         return response()->json(['message' => 'Promotor eliminado con éxito']);
     }

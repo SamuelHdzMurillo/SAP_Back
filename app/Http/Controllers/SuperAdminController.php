@@ -52,7 +52,7 @@ class SuperAdminController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:super_admins,email,'.$superAdmin->id,
+            'email' => 'required|email|unique:super_admins,email,' . $superAdmin->id,
             'phone_number' => 'required|numeric',
             'profile_img_path' => 'image|nullable|max:1999',
             // No actualizar contraseña si no se proporciona una nueva

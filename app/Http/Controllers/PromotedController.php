@@ -36,7 +36,7 @@ class PromotedController extends Controller
         return response()->json(['message' => 'Datos del archivo Excel mostrados con éxito']);
     }
 
-    public function export() 
+    public function export()
     {
         return Excel::download(new PromotedExport, 'Promovidos.xlsx');
     }
@@ -56,21 +56,21 @@ class PromotedController extends Controller
             'section' => 'nullable|string|max:255',
             'adress' => 'required|string|max:255',
             'electoral_key' => 'required|string|max:255',
-'curp' => 'required|string|max:255',
-'latitude' => 'required|string|max:255',
-'longitude' => 'required|string|max:255',
-'section_id' => 'required|integer|exists:sections,id' ,
-'promotor_id' => 'required|integer|exists:sections,id'// Asegúrate de que el ID de sección exista
-]);
+            'curp' => 'required|string|max:255',
+            'latitude' => 'required|string|max:255',
+            'longitude' => 'required|string|max:255',
+            'section_id' => 'required|integer|exists:sections,id',
+            'promotor_id' => 'required|integer|exists:sections,id' // Asegúrate de que el ID de sección exista
+        ]);
 
 
-    if ($validator->fails()) {
-        return response()->json($validator->errors(), 400);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $promoted = Promoted::create($validator->validated());
+        return response()->json($promoted, 201);
     }
-
-    $promoted = Promoted::create($validator->validated());
-    return response()->json($promoted, 201);
-}
 
     /**
      * Muestra un registro Promoted específico.
@@ -85,33 +85,33 @@ class PromotedController extends Controller
      * Actualiza un registro Promoted específico.
      */
     public function update(Request $request, $id)
-{
-    $rules = [
-        'name' => 'string|max:255',
-        'second_name' => 'nullable|string|max:255',
-        'last_name' => 'string|max:255',
-        'phone_number' => 'string|max:255',
-        'email' => 'email|unique:promoteds,email,' . $id,
-        'section' => 'nullable|string|max:255',
-        'adress' => 'string|max:255',
-        'electoral_key' => 'string|max:255',
-        'curp' => 'string|max:255',
-        'latitude' => 'numeric',
-        'longitude' => 'numeric',
-        'section_id' => 'integer|exists:sections,id',
-        'promotor_id' => 'integer|exists:sections,id'
-    ];
+    {
+        $rules = [
+            'name' => 'string|max:255',
+            'second_name' => 'nullable|string|max:255',
+            'last_name' => 'string|max:255',
+            'phone_number' => 'string|max:255',
+            'email' => 'email|unique:promoteds,email,' . $id,
+            'section' => 'nullable|string|max:255',
+            'adress' => 'string|max:255',
+            'electoral_key' => 'string|max:255',
+            'curp' => 'string|max:255',
+            'latitude' => 'numeric',
+            'longitude' => 'numeric',
+            'section_id' => 'integer|exists:sections,id',
+            'promotor_id' => 'integer|exists:sections,id'
+        ];
 
-    $validatedData = $request->validate($rules);
+        $validatedData = $request->validate($rules);
 
-    $promoted = Promoted::find($id);
-    if (!$promoted) {
-        return response()->json(['message' => 'Promoted not found'], 404);
+        $promoted = Promoted::find($id);
+        if (!$promoted) {
+            return response()->json(['message' => 'Promoted not found'], 404);
+        }
+
+        $promoted->update($validatedData);
+        return response()->json($promoted, 200);
     }
-
-    $promoted->update($validatedData);
-    return response()->json($promoted, 200);
-}
 
 
     /**
