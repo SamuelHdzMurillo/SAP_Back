@@ -59,6 +59,11 @@ class Promotor extends Authenticatable
     {
         return $this->hasMany(Promoted::class);
     }
+    
+    public function getPromoteds()
+{
+    return $this->promoteds; // Esto devuelve una colección de los promovidos relacionados con el promotor.
+}
 
     public function section()
 {

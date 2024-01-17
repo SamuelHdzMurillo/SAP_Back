@@ -24,6 +24,17 @@ class PromotorController extends Controller
 
     return response()->json($promotores);
 }
+public function showPromoteds($promotorId)
+{
+    try {
+        $promotor = Promotor::findOrFail($promotorId);
+        $promoteds = $promotor->getPromoteds();
+
+        return response()->json(['promotor' => $promotor, 'promoteds' => $promoteds]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'No se encontró el promotor'], 404);
+    }
+}
 
 
     /**

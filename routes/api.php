@@ -34,6 +34,7 @@ Route::post('/promotores', [PromotorController::class, 'store']);
 Route::get('/promotores/{promotor}', [PromotorController::class, 'show']);
 Route::put('/promotores/{promotor}', [PromotorController::class, 'update']);
 Route::delete('/promotores/{promotor}', [PromotorController::class, 'destroy']);
+Route::get('/promotor/{promotorId}/promoteds', [PromotorController::class, 'showPromoteds']);
 
 
 Route::get('/promoted', [PromotedController::class, 'index']);
@@ -41,6 +42,8 @@ Route::post('/promoted', [PromotedController::class, 'store']);
 Route::get('/promoted/{id}', [PromotedController::class, 'show']);
 Route::put('/promoted/{id}', [PromotedController::class, 'update']);
 Route::delete('/promoted/{id}', [PromotedController::class, 'destroy']);
+
+
 
 
 Route::post('/upload-excel', [PromotedController::class, 'uploadExcel']);
