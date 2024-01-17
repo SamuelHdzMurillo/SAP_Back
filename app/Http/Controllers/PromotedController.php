@@ -13,7 +13,7 @@ class PromotedController extends Controller
      */
     public function index()
     {
-        $promoteds = Promoted::all();
+        $promoteds = Promoted::with('problems')->get();
         return response()->json($promoteds);
     }
 
@@ -51,7 +51,7 @@ class PromotedController extends Controller
      */
     public function show($id)
     {
-        $promoted = Promoted::find($id);
+        $promoted = Promoted::with('problems')->find($id);
         return response()->json($promoted);
     }
 
