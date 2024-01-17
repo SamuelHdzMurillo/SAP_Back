@@ -14,10 +14,17 @@ class PromotorController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $promotores = Promotor::all();
-        return response()->json($promotores);
+{
+    // Consulta para obtener todos los promotores junto con las relaciones ansiosamente cargadas
+    $promotores = Promotor::with('municipal.districts', 'section.promoteds')->get();
+
+    if ($promotores->isEmpty()) {
+        return response()->json(['message' => 'No se encontraron promotores'], 404);
     }
+
+    return response()->json($promotores);
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -53,10 +60,13 @@ class PromotorController extends Controller
      */
     public function show($id)
     {
-        $promotor = Promotor::find($id);
-        if (is_null($promotor)) {
+        // Busca un promotor por su ID junto con todas las relaciones cargadas ansiosamente.
+        $promotor = Promotor::with('municipal.districts',  'section.promoteds')->find($id);
+    
+        if (!$promotor) {
             return response()->json(['message' => 'Promotor no encontrado'], 404);
         }
+    
         return response()->json($promotor);
     }
 
