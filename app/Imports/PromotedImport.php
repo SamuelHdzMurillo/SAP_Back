@@ -20,7 +20,6 @@ class PromotedImport implements ToModel
      */
     public function model(array $row)
     {
-        dd($row);
         return new Promoted([
             'name'           => $row[0],
             'second_name'    => $row[1],
@@ -33,7 +32,7 @@ class PromotedImport implements ToModel
             'curp'           => $row[8],
             'latitude'       => $row[9],
             'longitude'      => $row[10],
-            "section_id"    => intval($row[11]),
+            "section_id"    => $row[11] ,
             'promotor_id'   => $this->promotorId,
         ]);
     }

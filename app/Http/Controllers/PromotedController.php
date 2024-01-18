@@ -28,12 +28,9 @@ class PromotedController extends Controller
         ]);
 
         $file = $request->file('file');
-        $data = Excel::toArray(new PromotedImport($promotorId), $file);
+        Excel::import(new PromotedImport($promotorId), $file);
 
-        // $data contiene los datos del archivo Excel en una matriz,
-        // y cada fila debería incluir el valor de $userId en el campo "user_id"
-
-        return response()->json(['message' => 'Datos del archivo Excel mostrados con éxito']);
+        return response()->json(['message' => "Archivo Excel importado con exito."]);
     }
 
     public function export()
