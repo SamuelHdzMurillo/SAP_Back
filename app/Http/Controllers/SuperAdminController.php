@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\SuperAdmin;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
+use App\Http\Resources\SuperAdminResource;
 use Illuminate\Http\Request;
 
 class SuperAdminController extends Controller
@@ -13,24 +15,26 @@ class SuperAdminController extends Controller
      */
     public function index()
     {
-        $superAdmins = SuperAdmin::all();
-        return response()->json($superAdmins);
+        $superAdmins = SuperAdmin::orderBy("created_at", "desc")->paginate(10);
+        return  SuperAdminResource::collection($superAdmins);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|unique:super_admins',
-            'phone_number' => 'required|numeric',
-            'profile_img_path' => 'image|nullable|max:1999',
-            'password' => 'required'
-        ]);
+        $validatedData = $request->all();
+        $validatedData['password'] = bcrypt($validatedData['password']);
 
-        // Si se sube una imagen, manejar la subida de archivos aquí
+        // Verifica si se ha subido una imagen
+        if ($request->hasFile('profile_img_path')) {
+            // Almacena la imagen en el disco 'public' en la carpeta 'images' y obtén su ruta
+            $path = $request->file('profile_img_path')->store('images', 'public');
+
+            // Agrega la ruta de la imagen a los datos validados
+            $validatedData['profile_img_path'] = $path;
+        }
 
         $superAdmin = SuperAdmin::create($validatedData);
 
@@ -71,6 +75,6 @@ class SuperAdminController extends Controller
     public function destroy(SuperAdmin $superAdmin)
     {
         $superAdmin->delete();
-        return response()->json(['message' => 'Super Admin eliminado con éxito.']);
+        return response()->json(['message' => 'Super Admin eliminado con éxito.', 'data' => $superAdmin]);
     }
 }
