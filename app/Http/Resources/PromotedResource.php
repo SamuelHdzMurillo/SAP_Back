@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class PromotedResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request)
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'second_name' => $this->second_name,
+            'last_name' => $this->last_name,
+            'email' => $this->email,
+            'phone_number' => $this->phone_number,
+            'section' => $this->section,
+            'adress' => $this->adress,
+            'electoral_key' => $this->electoral_key,
+            'curp' => $this->curp,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+            'section_id' => $this->section_id,
+            'promotor_id' => $this->promotor_id,
+
+
+        ];
+    }
+}
