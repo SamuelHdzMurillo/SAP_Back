@@ -16,7 +16,7 @@ class MunicipalController extends Controller
     public function index()
     {
         // Obtener todos los municipios con relaciones
-        $municipals = Municipal::with(['districts.sections.promotors', 'districts.sections.promoteds'])->get();
+        $municipals = Municipal::with(['districts.sections.promotors', 'districts.sections.promoteds'])->paginate(10);
 
         // Devolver los datos en formato JSON
         return response()->json($municipals);

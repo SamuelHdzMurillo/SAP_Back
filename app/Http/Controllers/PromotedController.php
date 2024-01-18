@@ -17,7 +17,7 @@ class PromotedController extends Controller
      */
     public function index()
     {
-        $promoteds = Promoted::with('problems')->get();
+        $promoteds = Promoted::with('problems')->paginate(10);
         return response()->json($promoteds);
     }
 

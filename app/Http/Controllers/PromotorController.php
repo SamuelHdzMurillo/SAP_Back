@@ -16,7 +16,7 @@ class PromotorController extends Controller
     public function index()
     {
         // Consulta para obtener todos los promotores junto con las relaciones ansiosamente cargadas
-        $promotores = Promotor::with('municipal.districts', 'section.promoteds')->get();
+        $promotores = Promotor::with('municipal.districts', 'section.promoteds')->paginate(10);
 
         if ($promotores->isEmpty()) {
             return response()->json(['message' => 'No se encontraron promotores'], 404);
