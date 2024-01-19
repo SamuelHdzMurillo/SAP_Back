@@ -8,10 +8,12 @@ use Maatwebsite\Excel\Concerns\ToModel;
 class PromotedImport implements ToModel
 {
     protected $promotorId;
+    protected $sectionId;
 
-    public function __construct($promotorId)
+    public function __construct($promotorId, $sectionId)
     {
         $this->promotorId = $promotorId;
+        $this->sectionId = $sectionId;
     }
     /**
      * @param array $row
@@ -32,7 +34,7 @@ class PromotedImport implements ToModel
             'curp'           => $row[8],
             'latitude'       => $row[9],
             'longitude'      => $row[10],
-            "section_id"    => $row[11] ,
+            "section_id"    => $this->sectionId,
             'promotor_id'   => $this->promotorId,
         ]);
     }

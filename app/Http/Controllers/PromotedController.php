@@ -17,18 +17,18 @@ class PromotedController extends Controller
      */
     public function index()
     {
-        $promoteds = Promoted::with('problems')->paginate(10);
+        $promoteds = Promoted::with('problems')->get(); //->paginate(10);
         return response()->json($promoteds);
     }
 
-    public function uploadExcel(Request $request, $promotorId)
+    public function uploadExcel(Request $request, $promotorId, $sectionId)
     {
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
 
         $file = $request->file('file');
-        Excel::import(new PromotedImport($promotorId), $file);
+        Excel::import(new PromotedImport($promotorId, $sectionId), $file);
 
         return response()->json(['message' => "Archivo Excel importado con exito."]);
     }

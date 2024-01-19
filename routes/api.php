@@ -46,7 +46,7 @@ Route::delete('/promoted/{id}', [PromotedController::class, 'destroy']);
 
 
 
-Route::post('/upload-excel/{promotorId}', [PromotedController::class, 'uploadExcel']);
+Route::post('/upload-excel/{promotorId}/{sectionId}', [PromotedController::class, 'uploadExcel']);
 Route::get('/export-excel', [PromotedController::class, 'export']);
 
 Route::get('/municipals', [MunicipalController::class, 'index']);
