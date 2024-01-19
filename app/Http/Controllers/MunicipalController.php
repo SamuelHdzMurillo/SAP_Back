@@ -89,6 +89,30 @@ class MunicipalController extends Controller
         return response()->json(['counts' => $counts]);
     }
 
+    public function sectionsWithPromovedCount()
+    {
+        $sections = DB::table('sections')
+            ->join('districts', 'sections.district_id', '=', 'districts.id')
+            ->join('municipals', 'districts.municipal_id', '=', 'municipals.id') // Asegurarse de unir con municipals
+            ->leftJoin('promoteds', 'sections.id', '=', 'promoteds.section_id')
+            ->select(
+                'municipals.name as municipal_name', // Añadir el nombre del municipio
+                'districts.number as district_number',
+                'sections.id as section_id',
+                'sections.number as section_number',
+                DB::raw('count(promoteds.id) as promoved_count')
+            )
+            ->groupBy('municipals.name', 'districts.number', 'sections.id', 'sections.number')
+            ->orderBy('municipals.name', 'asc') // Ordenar por nombre de municipio primero
+            ->orderBy('districts.number', 'asc')
+            ->orderBy('sections.number', 'asc')
+            ->get();
+
+        return response()->json(['sections' => $sections]);
+    }
+
+
+
     /**
      * Show the form for creating a new resource.
      */

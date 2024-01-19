@@ -35,9 +35,18 @@ class DistrictController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(District $district)
+    public function show($id)
     {
-        //
+        // Buscar el distrito por ID
+        $district = District::with(['municipal', 'sections.promoteds'])->find($id);
+
+        // Si no se encuentra el distrito, devuelve un error 404
+        if (!$district) {
+            return response()->json(['message' => 'Distrito no encontrado.'], 404);
+        }
+
+        // Devuelve el distrito y sus relaciones en formato JSON
+        return response()->json($district);
     }
 
     /**

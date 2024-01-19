@@ -8,6 +8,7 @@ use App\Http\Controllers\PromotedController;
 use App\Http\Controllers\MunicipalController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\DistrictController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -55,6 +56,10 @@ Route::get('/municipals/districts/promoveds/count', [MunicipalController::class,
 Route::get('/municipals/sections/promoveds/count', [MunicipalController::class, 'countPromovedsInSections']);
 Route::get('/municipals/sections/promoveds/count-by-date', [MunicipalController::class, 'countPromovedsInSectionsByDate']);
 Route::get('/municipals/districts/promoveds/count-by-date', [MunicipalController::class, 'countPromovedsInDistrictsByDate']);
+Route::get('/municipals/sections-with-promoved-count', [MunicipalController::class, 'sectionsWithPromovedCount']);
+
+
+Route::get('/districts/{id}', [DistrictController::class, 'show']);
 
 
 Route::get('/problems', [ProblemController::class, 'index']); // Listar todos los problemas
