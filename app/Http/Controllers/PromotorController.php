@@ -42,28 +42,39 @@ class PromotorController extends Controller
      */
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'email' => 'required|email|unique:promotors,email',
             'phone_number' => 'required',
             'position' => 'required',
             'password' => 'required|confirmed',
-            'profile_path' => 'required',
-            'ine_path' => 'required',
+            'profile_path' => 'image|nullable|max:1999', // Asegúrate de que el archivo sea una imagen
+            'ine_path' => 'image|nullable|max:1999', // Asegúrate de que el archivo sea una imagen
             'username' => 'required|unique:promotors,username',
-            'municipal_id' => 'required|exists:municipals,id', // Asegúrate de que el ID municipal exista
+            'municipal_id' => 'required|exists:municipals,id',
         ]);
-
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
+        $validatedData = $validator->validated();
+        $validatedData['password'] = bcrypt($validatedData['password']);
 
+        // Verifica si se ha subido una imagen de perfil
+        if ($request->hasFile('profile_path')) {
+            $profilePath = $request->file('profile_path')->store('images/profiles', 'public');
+            $validatedData['profile_path'] = $profilePath;
+        }
 
-        $promotor = Promotor::create($validator->validated());
-        return response()->json($promotor, 201);
+        // Verifica si se ha subido una imagen de INE
+        if ($request->hasFile('ine_path')) {
+            $inePath = $request->file('ine_path')->store('images/ines', 'public');
+            $validatedData['ine_path'] = $inePath;
+        }
+
+        $promotor = Promotor::create($validatedData);
+        return response()->json(['message' => 'Promotor creado con éxito.', 'data' => $promotor], 201);
     }
 
     /**
