@@ -20,13 +20,13 @@ class CatalogController extends Controller
 
     public function DistrictSelect()
     {
-        $District = District::all();
+        $District = District::where("municipal_id", request()->municipal_id)->get();
         return CatalogResource::collection($District);
     }
 
     public function SectioSelect()
     {
-        $Section = Section::all();
+        $Section = Section::where("district_id", request()->district_id)->get();
         return CatalogResource::collection($Section);
     }
 }
