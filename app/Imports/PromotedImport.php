@@ -4,8 +4,9 @@ namespace App\Imports;
 
 use App\Models\Promoted;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class PromotedImport implements ToModel
+class PromotedImport implements ToModel, WithHeadingRow
 {
     protected $promotorId;
     protected $sectionId;
@@ -23,17 +24,17 @@ class PromotedImport implements ToModel
     public function model(array $row)
     {
         return new Promoted([
-            'name'           => $row[0],
-            'second_name'    => $row[1],
-            'last_name'      => $row[2],
-            'phone_number'   => $row[3],
-            'email'          => $row[4],
-            'section'        => $row[5],
-            'adress'         => $row[6],
-            'electoral_key'  => $row[7],
-            'curp'           => $row[8],
-            'latitude'       => $row[9],
-            'longitude'      => $row[10],
+            'name'           => $row['name'],
+            'second_name'    => $row['second_name'],
+            'last_name'      => $row['last_name'],
+            'phone_number'   => $row['phone_number'],
+            'email'          => $row['email'],
+            'section'        => $row['section'],
+            'adress'         => $row['adress'],
+            'electoral_key'  => $row['electoral_key'],
+            'curp'           => $row['curp'],
+            'latitude'       => $row['latitude'],
+            'longitude'      => $row['longitude'],
             "section_id"    => $this->sectionId,
             'promotor_id'   => $this->promotorId,
         ]);
