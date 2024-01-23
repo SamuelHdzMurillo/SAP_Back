@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\PromotedImport;
 use App\Exports\PromotedExport;
 use App\Http\Resources\PromotedResource;
+use Illuminate\Support\Facades\DB;
 
 class PromotedController extends Controller
 {
@@ -72,8 +73,10 @@ class PromotedController extends Controller
      */
     public function show($id)
     {
-        $promoted = Promoted::with('problems')->find($id);
-        return response()->json($promoted);
+        $promoted = Promoted::with('problems', "promotor")->with(["section" => function ($q) {
+            $q->with("district");
+        }])->find($id);
+        return new PromotedResource($promoted);
     }
 
     /**
@@ -81,30 +84,27 @@ class PromotedController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rules = [
-            'name' => 'string|max:255',
-            'second_name' => 'nullable|string|max:255',
-            'last_name' => 'string|max:255',
-            'phone_number' => 'string|max:255',
-            'email' => 'email|unique:promoteds,email,' . $id,
-            'section' => 'nullable|string|max:255',
-            'adress' => 'string|max:255',
-            'electoral_key' => 'string|max:255',
-            'curp' => 'string|max:255',
-            'latitude' => 'numeric',
-            'longitude' => 'numeric',
-            'section_id' => 'integer|exists:sections,id',
-            'promotor_id' => 'integer|exists:sections,id'
-        ];
 
-        $validatedData = $request->validate($rules);
+        DB::beginTransaction();
 
         $promoted = Promoted::find($id);
         if (!$promoted) {
             return response()->json(['message' => 'Promoted not found'], 404);
         }
 
-        $promoted->update($validatedData);
+        $promoted->name = strlen($request->input('name')) > 0 ? $request->input('name') : $promoted->name;
+        $promoted->last_name = strlen($request->input('last_name')) > 0 ? $request->input('last_name') : $promoted->last_name;
+        $promoted->phone_number = strlen($request->input('phone_number')) > 0 ? $request->input('phone_number') : $promoted->phone_number;
+        $promoted->email = strlen($request->input('email')) > 0 ? $request->input('email') : $promoted->email;
+        $promoted->adress = strlen($request->input('adress')) > 0 ? $request->input('adress') : $promoted->adress;
+        $promoted->electoral_key = strlen($request->input('electoral_key')) > 0 ? $request->input('electoral_key') : $promoted->electoral_key;
+        $promoted->curp = strlen($request->input('curp')) > 0 ? $request->input('curp') : $promoted->curp;
+        $promoted->latitude = strlen($request->input('latitude')) > 0 ? $request->input('latitude') : $promoted->latitude;
+        $promoted->longitude = strlen($request->input('longitude')) > 0 ? $request->input('longitude') : $promoted->longitude;
+        $promoted->section_id = $request->input('section_id') > 0 ? $request->input('section_id') : $promoted->section_id;
+        $promoted->promotor_id = $request->input('promotor_id') > 0 ? $request->input('promotor_id') : $promoted->promotor_id;
+        $promoted->save();
+        DB::commit();
         return response()->json($promoted, 200);
     }
 
@@ -114,8 +114,15 @@ class PromotedController extends Controller
      */
     public function destroy($id)
     {
-        Promoted::destroy($id);
-        return response()->json(null, 204);
+
+        $promoted = Promoted::find($id);
+        if (!$promoted) {
+            return response()->json(['message' => 'Promoted not found'], 404);
+        }
+        $promoted->delete();
+        return response()->json([
+            "data" => $promoted
+        ], 200);
     }
 
     // Aquí puedes agregar otros métodos y lógicas específicas para tu aplicación

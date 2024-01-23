@@ -18,7 +18,6 @@ class PromotedResource extends JsonResource
             'key' => $this->id,
             'id' => $this->id,
             'name' => $this->name,
-            'second_name' => $this->second_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
@@ -29,6 +28,8 @@ class PromotedResource extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'section_id' => $this->section_id,
+            'district_id' => $this->section->district_id,
+            'municipal_id' => $this->section->district->municipal_id,
             'promotor_id' => $this->promotor_id,
         ];
     }
