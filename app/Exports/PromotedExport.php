@@ -13,8 +13,8 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class PromotedExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
 
     use Exportable;
 
@@ -26,19 +26,18 @@ class PromotedExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
             return [
                 'ID'            => $promoted->id,
                 'Nombre'        => $promoted->name,
-                'Apellido Materno'      => $promoted->second_name,
-                'Apellido Paterno'      => $promoted->last_name,
+                'Apellidos'      => $promoted->second_name,
                 'Clave de Elector'      => $promoted->electoral_key,
                 'Curp'      => $promoted->curp,
                 'Teléfono'      => $promoted->phone_number,
                 'Correo'        => $promoted->email,
-                'Sección'       => $promoted->section,
+                'Sección'       => $promoted->section->number,
                 'Dirección'     => $promoted->adress,
                 // Otras columnas que desees exportar
             ];
         });
     }
-    
+
     public function headings(): array
     {
         return [
@@ -46,8 +45,8 @@ class PromotedExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
             'Nombre',
             'Apellido Materno',
             'Apellido Paterno',
-            'Clave de Elector' ,
-            'Curp'   ,
+            'Clave de Elector',
+            'Curp',
             'Teléfono',
             'Correo',
             'Sección',
