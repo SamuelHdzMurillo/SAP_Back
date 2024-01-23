@@ -34,7 +34,7 @@ class Promoted extends Model
         return $this->belongsTo(Section::class,'section_id');
     }
 
-    public function promotors()
+    public function promotor()
     {
         return $this->belongsTo(Promotor::class);
     }

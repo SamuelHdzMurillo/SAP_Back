@@ -15,6 +15,7 @@ class PromotedResource extends JsonResource
     public function toArray(Request $request)
     {
         return [
+            'key' => $this->id,
             'id' => $this->id,
             'name' => $this->name,
             'second_name' => $this->second_name,
@@ -29,8 +30,6 @@ class PromotedResource extends JsonResource
             'longitude' => $this->longitude,
             'section_id' => $this->section_id,
             'promotor_id' => $this->promotor_id,
-
-
         ];
     }
 }

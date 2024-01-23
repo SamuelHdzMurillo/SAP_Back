@@ -21,15 +21,11 @@ class CatalogController extends Controller
     public function getDistrictsByMunicipal($municipalId)
     {
         // Busca el municipio por ID con sus distritos relacionados
-        $municipal = Municipal::with('districts')->find($municipalId);
-
-        // Si el municipio no se encuentra, devuelve un error 404
-        if (!$municipal) {
-            return response()->json(['message' => 'Municipio no encontrado.'], 404);
-        }
+        $districts = District::select("id as value", "number as label")->where('municipal_id', $municipalId)->get();
 
         // Devuelve los distritos del municipio en formato JSON
-        return response()->json($municipal->districts);
+        return CatalogResource::collection($districts);
+        // return response()->json($districts);
     }
 
     public function getSectionsByDistrict($districtId)

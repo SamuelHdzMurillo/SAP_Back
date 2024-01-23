@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\PromotedImport;
 use App\Exports\PromotedExport;
-
+use App\Http\Resources\PromotedResource;
 
 class PromotedController extends Controller
 {
@@ -17,8 +17,8 @@ class PromotedController extends Controller
      */
     public function index()
     {
-        $promoteds = Promoted::with('problems')->get(); //->paginate(10);
-        return response()->json($promoteds);
+        $promoteds = Promoted::with('section', "promotor")->paginate(10);
+        return PromotedResource::collection($promoteds);
     }
 
     public function uploadExcel(Request $request, $promotorId, $sectionId)

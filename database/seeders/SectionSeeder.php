@@ -2112,8 +2112,6 @@ class SectionSeeder extends Seeder
                 DB::table('sections')->insert([
                     'number' => $item['seccion'],
                     'district_id' => $districtId,
-                    'created_at' => now(),
-                    'updated_at' => now(),
                 ]);
             }
         } else {
