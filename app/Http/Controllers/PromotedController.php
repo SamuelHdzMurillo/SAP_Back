@@ -22,14 +22,14 @@ class PromotedController extends Controller
         return PromotedResource::collection($promoteds);
     }
 
-    public function uploadExcel(Request $request, $promotorId, $sectionId)
+    public function uploadExcel(Request $request, $promotorId)
     {
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
 
         $file = $request->file('file');
-        Excel::import(new PromotedImport($promotorId, $sectionId), $file);
+        Excel::import(new PromotedImport(1), $file);
 
         return response()->json(['message' => "Archivo Excel importado con exito."]);
     }

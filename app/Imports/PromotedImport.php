@@ -3,18 +3,17 @@
 namespace App\Imports;
 
 use App\Models\Promoted;
+use App\Models\Section;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class PromotedImport implements ToModel, WithHeadingRow
 {
-    protected $promotorId;
-    protected $sectionId;
+    protected string $promotorId;
 
-    public function __construct($promotorId, $sectionId)
+    public function __construct(string $promotorId)
     {
         $this->promotorId = $promotorId;
-        $this->sectionId = $sectionId;
     }
     /**
      * @param array $row
@@ -23,20 +22,19 @@ class PromotedImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
+        $section = Section::where("number", $row["section"])->first();
         return new Promoted([
             'name'           => $row['name'],
-            'second_name'    => $row['second_name'],
             'last_name'      => $row['last_name'],
             'phone_number'   => $row['phone_number'],
             'email'          => $row['email'],
-            'section'        => $row['section'],
             'adress'         => $row['adress'],
             'electoral_key'  => $row['electoral_key'],
             'curp'           => $row['curp'],
             'latitude'       => $row['latitude'],
             'longitude'      => $row['longitude'],
-            "section_id"    => $this->sectionId,
-            'promotor_id'   => $this->promotorId,
+            "section_id"    => "$section->id",
+            'promotor_id'   => "$this->promotorId",
         ]);
     }
 }
