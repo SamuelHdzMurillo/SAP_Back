@@ -12,11 +12,9 @@ class Promoted extends Model
     // Especificar los campos asignables de manera masiva
     protected $fillable = [
         'name',
-        'second_name',
         'last_name',
         'phone_number',
         'email',
-        'section',
         'adress',
         'electoral_key',
         'curp',

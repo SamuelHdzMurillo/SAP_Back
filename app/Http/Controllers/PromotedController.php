@@ -46,11 +46,9 @@ class PromotedController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'second_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255',
             'email' => 'required|email|unique:promoteds,email',
-            'section' => 'nullable|string|max:255',
             'adress' => 'required|string|max:255',
             'electoral_key' => 'required|string|max:255',
             'curp' => 'required|string|max:255',

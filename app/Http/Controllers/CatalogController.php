@@ -31,14 +31,9 @@ class CatalogController extends Controller
     public function getSectionsByDistrict($districtId)
     {
         // Busca el distrito por ID con sus secciones relacionadas
-        $district = District::with('sections')->find($districtId);
-
-        // Si el distrito no se encuentra, devuelve un error 404
-        if (!$district) {
-            return response()->json(['message' => 'Distrito no encontrado.'], 404);
-        }
+        $districts = Section::select("id as value", "number as label")->where('district_id', $districtId)->get();
 
         // Devuelve las secciones del distrito en formato JSON
-        return response()->json($district->sections);
+        return CatalogResource::collection($districts);
     }
 }
