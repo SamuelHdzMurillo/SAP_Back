@@ -35,7 +35,7 @@ class ProblemController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'problem_img_path' => 'nullable|string',
+            'problem_img_path' => 'nullable',
             'promoted_id' => 'required|exists:promoteds,id',
         ]);
 
@@ -43,11 +43,15 @@ class ProblemController extends Controller
             return response()->json(['error' => $validator->errors()], 400);
         }
 
+        if ($request->hasFile('problem_img_path')) {
+            $problem_img_path = $request->file('problem_img_path')->store('images/problems', 'public');
+            $validatedData['problem_img_path'] = $problem_img_path;
+        }
         // Crear un nuevo problema
         $problem = Problem::create([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
-            'problem_img_path' => $request->input('problem_img_path'),
+            'problem_img_path' => $validatedData['problem_img_path'],
             'promoted_id' => $request->input('promoted_id'),
         ]);
 
