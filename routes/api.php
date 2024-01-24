@@ -25,8 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/superadmin/login', [SuperAdminAuthController::class, 'login']);
-Route::post('/superadmin/logout', [SuperAdminAuthController::class, 'logout'])->middleware('auth:superadmin');
+Route::post('/login', [SuperAdminAuthController::class, 'login']);
+Route::post('/logout', [SuperAdminAuthController::class, 'logout'])->middleware('auth:superadmin');
 
 Route::get('/superAdmins', [SuperAdminController::class, 'index']);
 Route::post('/superAdmins', [SuperAdminController::class, 'store']);
