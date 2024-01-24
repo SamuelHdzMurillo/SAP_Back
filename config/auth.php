@@ -44,6 +44,10 @@ return [
             'driver' => 'session',
             'provider' => 'superadmins',
         ],
+        'promotor' => [
+            'driver' => 'session', // o 'token' si estás usando tokens
+            'provider' => 'promotors',
+        ],
     ],
 
     /*
@@ -73,6 +77,13 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\SuperAdmin::class,
         ],
+
+        'promotors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Promotor::class,
+        ],
+
+
 
         // 'users' => [
         //     'driver' => 'database',

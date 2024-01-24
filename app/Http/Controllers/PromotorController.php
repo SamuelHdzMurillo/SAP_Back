@@ -37,6 +37,22 @@ class PromotorController extends Controller
         }
     }
 
+    public function showPromotedsCount($promotorId)
+    {
+        try {
+            $promotor = Promotor::findOrFail($promotorId);
+            $promotedsCount = $promotor->promoteds()->count(); // Usando el método count() para obtener la cantidad
+
+            return response()->json([
+                'promotor' => $promotor->name, // Ejemplo, solo devolvemos el nombre del promotor
+                'promotedsCount' => $promotedsCount
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'No se encontró el promotor'], 404);
+        }
+    }
+
+
 
     /**
      * Store a newly created resource in storage.

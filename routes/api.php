@@ -40,6 +40,7 @@ Route::get('/promotores/{promotor}', [PromotorController::class, 'show']);
 Route::put('/promotores/{promotor}', [PromotorController::class, 'update']);
 Route::delete('/promotores/{promotor}', [PromotorController::class, 'destroy']);
 Route::get('/promotor/{promotorId}/promoteds', [PromotorController::class, 'showPromoteds']);
+Route::get('/promotor/{promotorId}/promoteds/count', [PromotorController::class, 'showPromotedsCount']);
 
 
 Route::get('/promoted', [PromotedController::class, 'index']);
