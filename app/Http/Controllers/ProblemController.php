@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProblemResource;
 use App\Models\Problem;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -17,10 +18,10 @@ class ProblemController extends Controller
     public function index()
     {
         // Obtener todos los problemas
-        $problems = Problem::all();
+        $problems = Problem::paginate(10);
 
         // Devolver los datos en formato JSON
-        return response()->json(['data' => $problems]);
+        return ProblemResource::collection($problems);
     }
 
     /**
@@ -111,12 +112,18 @@ class ProblemController extends Controller
      * @param  Problem  $problem
      * @return JsonResponse
      */
-    public function destroy(Problem $problem)
+    public function destroy(string $id)
     {
         // Eliminar el problema
+        $problem = Problem::find($id);
+        if (is_null($problem)) {
+            return response()->json(['message' => 'Problema no encontrado'], 404);
+        }
         $problem->delete();
 
         // Devolver respuesta exitosa en formato JSON
-        return response()->json(['message' => 'Problem deleted successfully']);
+        return response()->json([
+            "data" => $problem
+        ], 200);
     }
 }
