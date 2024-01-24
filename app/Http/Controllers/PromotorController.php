@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PromotorResource;
 use App\Models\Promotor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -22,7 +23,7 @@ class PromotorController extends Controller
             return response()->json(['message' => 'No se encontraron promotores'], 404);
         }
 
-        return response()->json($promotores);
+        return PromotorResource::collection($promotores);
     }
     public function showPromoteds($promotorId)
     {
@@ -50,7 +51,6 @@ class PromotorController extends Controller
             'password' => 'required|confirmed',
             'profile_path' => 'image|nullable|max:1999', // Asegúrate de que el archivo sea una imagen
             'ine_path' => 'image|nullable|max:1999', // Asegúrate de que el archivo sea una imagen
-            'username' => 'required|unique:promotors,username',
             'municipal_id' => 'required|exists:municipals,id',
         ]);
 
@@ -104,12 +104,11 @@ class PromotorController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:promotores,email,' . $id,
+            'email' => 'required|email|unique:promotors,email,' . $id,
             'phone_number' => 'required',
             'position' => 'required',
             'profile_path' => 'required',
             'ine_path' => 'required',
-            'username' => 'required|unique:promotores,username,' . $id,
             'municipal_id' => 'required|exists:municipals,id',
         ]);
 
@@ -132,6 +131,8 @@ class PromotorController extends Controller
         }
 
         $promotor->delete();
-        return response()->json(['message' => 'Promotor eliminado con éxito']);
+        return response()->json([
+            "data" => $promotor
+        ], 200);
     }
 }

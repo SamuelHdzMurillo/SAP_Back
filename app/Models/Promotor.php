@@ -23,7 +23,6 @@ class Promotor extends Authenticatable
         'position',
         'profile_path',
         'ine_path',
-        'username',
         'municipal_id',
         'password',
     ];
@@ -59,16 +58,16 @@ class Promotor extends Authenticatable
     {
         return $this->hasMany(Promoted::class);
     }
-    
+
     public function getPromoteds()
-{
-    return $this->promoteds; // Esto devuelve una colección de los promovidos relacionados con el promotor.
-}
+    {
+        return $this->promoteds; // Esto devuelve una colección de los promovidos relacionados con el promotor.
+    }
 
     public function section()
-{
-    return $this->belongsTo(Section::class);
-}
+    {
+        return $this->belongsTo(Section::class);
+    }
 
 
     // Aquí puedes añadir otras relaciones o métodos personalizados si es necesario.
