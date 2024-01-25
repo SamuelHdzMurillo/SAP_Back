@@ -20,16 +20,18 @@ class SuperAdminAuthController extends Controller
         if (Auth::guard('superadmin')->attempt($request->only('email', 'password'))) {
             $user = Auth::guard('superadmin')->user();
             $token = $user->createToken('SuperAdminToken')->plainTextToken;
+            $userData = $user->toArray(); // Obtener todos los datos del usuario
 
-            return response()->json(['token' => $token, 'user_type' => 'superadmin'], 200);
+            return response()->json(['token' => $token, 'user_type' => 'superadmin', 'user' => $userData], 200);
         }
 
         // Intenta autenticar con Promotor
         if (Auth::guard('promotor')->attempt($request->only('email', 'password'))) {
             $user = Auth::guard('promotor')->user();
             $token = $user->createToken('PromotorToken')->plainTextToken;
+            $userData = $user->toArray(); // Obtener todos los datos del usuario
 
-            return response()->json(['token' => $token, 'user_type' => 'promotor'], 200);
+            return response()->json(['token' => $token, 'user_type' => 'promotor', 'user' => $userData], 200);
         }
 
         throw ValidationException::withMessages([
