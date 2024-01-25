@@ -16,11 +16,11 @@ class PromotedSeeder extends Seeder
         $promoteds = [
             [
                 'name' => 'Promovido',
-                'second_name' => 'Uno',
+                
                 'last_name' => 'Apellido',
                 'phone_number' => '1234567890',
                 'email' => 'promovido1@example.com',
-                'section' => '001',
+                
                 'adress' => 'Calle Ficticia 123',
                 'electoral_key' => Str::random(18),
                 'curp' => Str::random(18),
@@ -31,11 +31,11 @@ class PromotedSeeder extends Seeder
             ],
             [
                 'name' => 'Promovido',
-                'second_name' => 'Dos',
+                
                 'last_name' => 'Apellido',
                 'phone_number' => '0987654321',
                 'email' => 'promovido2@example.com',
-                'section' => '002',
+                
                 'adress' => 'Calle Ficticia 456',
                 'electoral_key' => Str::random(18),
                 'curp' => Str::random(18),

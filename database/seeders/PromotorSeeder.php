@@ -21,10 +21,10 @@ class PromotorSeeder extends Seeder
                 'position' => 'Promotor Position 1',
                 'profile_path' => '/path/to/promotor1.jpg',
                 'ine_path' => '/path/to/promotor1_ine.jpg',
-                'username' => 'promotoruno',
+                
                 'password' => Hash::make('securepassword1'),
                 'municipal_id' => 1, 
-                'section_id' => 1,
+               
             ],
             [
                 'name' => 'Promotor Dos',
@@ -33,10 +33,10 @@ class PromotorSeeder extends Seeder
                 'position' => 'Promotor Position 2',
                 'profile_path' => '/path/to/promotor2.jpg',
                 'ine_path' => '/path/to/promotor2_ine.jpg',
-                'username' => 'promotordos',
+                
                 'password' => Hash::make('securepassword2'),
                 'municipal_id' => 1, 
-                'section_id' => 1,
+                
             ],
         ];
 
