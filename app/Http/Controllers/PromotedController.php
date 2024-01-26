@@ -9,6 +9,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\PromotedImport;
 use App\Exports\PromotedExport;
 use App\Http\Resources\PromotedResource;
+use App\Http\Resources\PromotedsDashboard;
+use App\Models\Promotor;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class PromotedController extends Controller
@@ -20,6 +23,52 @@ class PromotedController extends Controller
     {
         $promoteds = Promoted::with('section', "promotor")->paginate(10);
         return PromotedResource::collection($promoteds);
+    }
+
+    public function getPromotedByPromotors(Request $request)
+    {
+        $filter = $request->input('filter');
+
+        if ($filter == 'week') {
+            $start = Carbon::now()->startOfWeek();
+            $end = Carbon::now()->endOfWeek();
+        } elseif ($filter == 'month') {
+            $start = Carbon::now()->startOfMonth();
+            $end = Carbon::now()->endOfMonth();
+        }
+
+        if (isset($start) && isset($end)) {
+            $promoteds = Promotor::with(['promoteds' => function ($query) use ($start, $end) {
+                $query->whereBetween('created_at', [$start, $end]);
+            }])->get();
+        } else {
+            $promoteds = Promotor::with("promoteds")->get();
+        }
+
+        return PromotedsDashboard::collection($promoteds);
+    }
+
+    public function getPromotedByDates(Request $request)
+    {
+        $filter = $request->input('filter');
+
+        if ($filter == 'week') {
+            $start = Carbon::now()->startOfWeek();
+            $end = Carbon::now()->endOfWeek();
+        } elseif ($filter == 'month') {
+            $start = Carbon::now()->startOfMonth();
+            $end = Carbon::now()->endOfMonth();
+        }
+        if (isset($start) && isset($end)) {
+            $promoteds_count = Promoted::where("created_at", ">=", $start)->where("created_at", "<=", $end)->count();
+        } else {
+            $promoteds_count = Promoted::count();
+        }
+
+
+
+
+        return response()->json(['promoteds_count' => $promoteds_count]);
     }
 
     public function uploadExcel(Request $request, $promotorId)
