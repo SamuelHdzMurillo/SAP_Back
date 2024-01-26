@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Promotor;
+
 
 class PromotorSeeder extends Seeder
 {
@@ -21,10 +23,10 @@ class PromotorSeeder extends Seeder
                 'position' => 'Promotor Position 1',
                 'profile_path' => '/path/to/promotor1.jpg',
                 'ine_path' => '/path/to/promotor1_ine.jpg',
-                
+
                 'password' => Hash::make('securepassword1'),
-                'municipal_id' => 1, 
-               
+                'municipal_id' => 1,
+
             ],
             [
                 'name' => 'Promotor Dos',
@@ -33,15 +35,19 @@ class PromotorSeeder extends Seeder
                 'position' => 'Promotor Position 2',
                 'profile_path' => '/path/to/promotor2.jpg',
                 'ine_path' => '/path/to/promotor2_ine.jpg',
-                
+
                 'password' => Hash::make('securepassword2'),
-                'municipal_id' => 1, 
-                
+                'municipal_id' => 1,
+
             ],
         ];
+
 
         foreach ($promotors as $promotor) {
             DB::table('promotors')->insert($promotor);
         }
+
+
+        Promotor::factory(200)->create();
     }
 }
