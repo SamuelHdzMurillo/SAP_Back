@@ -9,8 +9,15 @@ class GoalController extends Controller
 {
     public function index()
     {
-        $goals = Goal::all();
-        return response()->json($goals);
+        $goals = Goal::with('municipal')->get()->map(function ($goal) {
+            return [
+                'municipal_name' => $goal->municipal->name, // Nombre del municipio
+                'goal_name' => $goal->goalName,            // Nombre de la meta
+                'goal_value' => $goal->goalValue           // Valor de la meta
+            ];
+        });
+
+        return response()->json(['goals' => $goals]);
     }
 
     public function store(Request $request)
