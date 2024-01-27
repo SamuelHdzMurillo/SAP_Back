@@ -9,6 +9,7 @@ use App\Http\Controllers\MunicipalController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\GoalController;
 use App\Http\Controllers\Auth\SuperAdminAuthController;
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [SuperAdminAuthController::class, 'login']);
 Route::post('/logout', [SuperAdminAuthController::class, 'logout']);
+
+Route::get('/goals', [GoalController::class, 'index']);
+Route::post('/goals', [GoalController::class, 'store']);
+Route::put('/goals/{goal}', [GoalController::class, 'update']);
+Route::delete('/goals/{goal}', [GoalController::class, 'destroy']);
+
+
+
 
 Route::get('/superAdmins', [SuperAdminController::class, 'index'])->middleware('auth:sanctum');
 Route::post('/superAdmins', [SuperAdminController::class, 'store'])->middleware('auth:sanctum');

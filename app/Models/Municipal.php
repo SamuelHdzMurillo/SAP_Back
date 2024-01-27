@@ -43,6 +43,11 @@ class Municipal extends Model
         return $this->hasMany(Section::class);
     }
 
+    public function goals()
+    {
+        return $this->hasMany(Goal::class);
+    }
+
 
     // Aquí puedes agregar otras relaciones o lógica de negocio específica de tu modelo
 }
