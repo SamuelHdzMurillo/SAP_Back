@@ -6,6 +6,7 @@ use App\Models\Municipal;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class MunicipalController extends Controller
@@ -19,6 +20,37 @@ class MunicipalController extends Controller
         $municipals = Municipal::with(['districts.sections.promotors', 'districts.sections.promoteds'])->paginate(10);
 
         // Devolver los datos en formato JSON
+        return response()->json($municipals);
+    }
+
+    public function getMunicipalsByDateRange(Request $request)
+    {
+        $filter = $request->input('filter');
+
+        if ($filter == 'week') {
+            $start = Carbon::now()->startOfWeek();
+            $end = Carbon::now()->endOfWeek();
+        } elseif ($filter == 'month') {
+            $start = Carbon::now()->startOfMonth();
+            $end = Carbon::now()->endOfMonth();
+        } else {
+            // Si no se proporciona un filtro, o si es un filtro no reconocido,
+            // se puede establecer un rango de fechas predeterminado o retornar todos los datos.
+            // Por ejemplo, aquí se retorna todo:
+            $start = null;
+            $end = null;
+        }
+
+        if (isset($start) && isset($end)) {
+            $municipals = Municipal::with(['districts.sections' => function ($query) use ($start, $end) {
+                $query->whereHas('promoteds', function ($query) use ($start, $end) {
+                    $query->whereBetween('created_at', [$start, $end]);
+                });
+            }])->get();
+        } else {
+            $municipals = Municipal::with('districts.sections.promoteds')->get();
+        }
+
         return response()->json($municipals);
     }
 

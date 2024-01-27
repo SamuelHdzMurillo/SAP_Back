@@ -91,3 +91,6 @@ Route::get('/districts/{districtId}/sections', [CatalogController::class, 'getSe
 Route::get("/dashboard/promoteds-by-promotor", [PromotedController::class, 'getPromotedByPromotors'])->middleware('auth:sanctum');
 Route::get("/dashboard/promoteds-count-by-promotor", [PromotedController::class, 'getPromotedByDates'])->middleware('auth:sanctum');
 Route::get("/dashboard/promoteds-count-by-dates", [PromotedController::class, 'getPromotedByDatesPage'])->middleware('auth:sanctum');
+
+
+Route::get('/municipals/by-date-range', [MunicipalController::class, 'getMunicipalsByDateRange']);
