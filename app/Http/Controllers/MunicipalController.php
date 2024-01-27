@@ -23,6 +23,22 @@ class MunicipalController extends Controller
         return response()->json($municipals);
     }
 
+    public function totalPromotedsByMunicipality()
+    {
+        $counts = DB::table('promoteds')
+            ->join('sections', 'promoteds.section_id', '=', 'sections.id')
+            ->join('districts', 'sections.district_id', '=', 'districts.id')
+            ->join('municipals', 'districts.municipal_id', '=', 'municipals.id')
+            ->select('municipals.name as municipal_name', DB::raw('count(*) as total_promoveds'))
+            ->groupBy('municipals.name')
+            ->orderBy('municipals.name', 'asc')
+            ->get();
+
+        return response()->json(['municipals' => $counts]);
+    }
+
+
+
     public function getMunicipalsByDateRange(Request $request)
     {
         $filter = $request->input('filter');
