@@ -25,7 +25,7 @@ class PromotedFactory extends Factory
             'curp' => Str::random(18),
             'latitude' => $this->faker->latitude,
             'longitude' => $this->faker->longitude,
-            'section_id' => $this->faker->numberBetween(1, 300), // Asumiendo que tienes secciones en este rango
+            'section_id' => $this->faker->numberBetween(1, 1000), // Asumiendo que tienes secciones en este rango
             'promotor_id' => $this->faker->numberBetween(1, 100), // Asumiendo que tienes promotores en este rango
             'created_at' => $this->faker->dateTimeBetween($startDate, $endDate), // Fecha aleatoria en los últimos 6 meses
             'updated_at' => $this->faker->dateTimeBetween($startDate, $endDate), // Fecha aleatoria en los últimos 6 meses
