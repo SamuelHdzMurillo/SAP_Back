@@ -51,6 +51,6 @@ class PromotedSeeder extends Seeder
             DB::table('promoteds')->insert($promoted);
         }
 
-        Promoted::factory(50)->create();
+        Promoted::factory(10000)->create();
     }
 }
