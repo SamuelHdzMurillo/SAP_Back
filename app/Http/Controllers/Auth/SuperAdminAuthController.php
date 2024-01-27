@@ -11,6 +11,7 @@ class SuperAdminAuthController extends Controller
 {
     public function login(Request $request)
     {
+
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
@@ -35,7 +36,7 @@ class SuperAdminAuthController extends Controller
         }
 
         throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
+            'email' => ['Las credenciales son incorrectas.'],
         ]);
     }
 
