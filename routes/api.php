@@ -11,6 +11,8 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\Auth\SuperAdminAuthController;
+use App\Http\Controllers\MapController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -51,6 +53,7 @@ Route::delete('/promotores/{promotor}', [PromotorController::class, 'destroy'])-
 Route::get('/promotor/{promotorId}/promoteds', [PromotorController::class, 'showPromoteds'])->middleware('auth:sanctum');
 Route::get('/promotor/{promotorId}/promoteds/count', [PromotorController::class, 'showPromotedsCount'])->middleware('auth:sanctum');
 
+Route::get("/promoteds/map",[MapController::class, 'getPromoteds'])->middleware('auth:sanctum');
 
 Route::get('/promoted', [PromotedController::class, 'index'])->middleware('auth:sanctum');
 Route::post('/promoted', [PromotedController::class, 'store'])->middleware('auth:sanctum');
