@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('promotors', function (Blueprint $table) {
-            $table->string('username')->unique();
+            $table->string('username');
         });
     }
 };

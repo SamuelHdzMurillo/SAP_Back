@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('promotors', function (Blueprint $table) {
-            $table->foreignId("section_id")->constrained('sections');
+            $table->foreignId("section_id")->nullable()->constrained('sections');
         });
     }
 };

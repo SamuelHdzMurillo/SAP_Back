@@ -48,6 +48,43 @@ class PromotedController extends Controller
         return PromotedsDashboard::collection($promoteds);
     }
 
+    public function getPromotedByDatesPage(Request $request)
+    {
+        $filter = $request->input('filter');
+        if ($filter == 'week') {
+            $start = Carbon::now()->startOfWeek();
+            $end = Carbon::now()->endOfWeek();
+        } elseif ($filter == 'month') {
+            $start = Carbon::now()->startOfMonth();
+            $end = Carbon::now()->endOfMonth();
+        } else {
+            $start = Carbon::now()->subYear()->startOfYear();
+            $end = Carbon::now();
+        }
+        if (isset($start) && isset($end)) {
+            if ($filter == 'week' || $filter == 'month') {
+                $promoteds = Promoted::select(DB::raw('DAY(created_at) as day'), DB::raw('COUNT(*) as value'))
+                    ->whereBetween('created_at', [$start, $end])
+                    ->groupBy('day')
+                    ->orderBy('day', 'asc')
+                    ->get();
+            } else {
+                $promoteds = Promoted::select(DB::raw('YEAR(created_at) as year'), DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as value'))
+                    ->whereBetween('created_at', [$start, $end])
+                    ->groupBy('year', 'month')
+                    ->orderBy('year', 'asc')
+                    ->orderBy('month', 'asc')
+                    ->get()
+                    ->map(function ($item) {
+                        $item->day = Carbon::createFromFormat('Y-m', $item->year . '-' . $item->month)->format('F Y');
+                        return $item;
+                    });
+            }
+        }
+
+        return response()->json(['promoteds' => $promoteds]);
+    }
+
     public function getPromotedByDates(Request $request)
     {
         $filter = $request->input('filter');
@@ -172,6 +209,19 @@ class PromotedController extends Controller
         return response()->json([
             "data" => $promoted
         ], 200);
+    }
+
+    public function getMonths()
+    {
+        $months = [];
+        $date = Carbon::now();
+
+        for ($i = 0; $i < 12; $i++) {
+            $months[] = $date->format('F Y');
+            $date->subMonth();
+        }
+
+        return $months;
     }
 
     // Aquí puedes agregar otros métodos y lógicas específicas para tu aplicación
