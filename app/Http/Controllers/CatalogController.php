@@ -9,6 +9,7 @@ use App\Models\Municipal;
 use App\Models\District;
 use App\Models\Section;
 use App\Http\Resources\CatalogResource;
+use App\Models\User;
 
 class CatalogController extends Controller
 {
@@ -35,5 +36,11 @@ class CatalogController extends Controller
 
         // Devuelve las secciones del distrito en formato JSON
         return CatalogResource::collection($districts);
+    }
+
+    public function getUsers()
+    {
+        $users = User::all();
+        return CatalogResource::collection($users);
     }
 }

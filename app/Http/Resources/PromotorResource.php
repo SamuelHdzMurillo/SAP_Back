@@ -21,6 +21,7 @@ class PromotorResource extends JsonResource
             'email' => $this->email,
             'phone_number' => $this->phone_number,
             'position' => $this->position,
+            'municipal_name' => $this->municipal->name,
             'profile_path' => $this->profile_path,
             'ine_path' => $this->ine_path,
             'municipal_id' => $this->municipal_id,

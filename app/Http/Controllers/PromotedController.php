@@ -134,7 +134,7 @@ class PromotedController extends Controller
         ]);
 
         $file = $request->file('file');
-        Excel::import(new PromotedImport(1), $file);
+        Excel::import(new PromotedImport($promotorId), $file);
 
         return response()->json(['message' => "Archivo Excel importado con exito."]);
     }

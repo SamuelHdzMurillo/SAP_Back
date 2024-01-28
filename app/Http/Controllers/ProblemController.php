@@ -18,7 +18,7 @@ class ProblemController extends Controller
     public function index()
     {
         // Obtener todos los problemas
-        $problems = Problem::paginate(10);
+        $problems = Problem::with("promoted.section")->paginate(10);
 
         // Devolver los datos en formato JSON
         return ProblemResource::collection($problems);

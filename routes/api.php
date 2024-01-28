@@ -40,6 +40,7 @@ Route::delete('/goals/{goal}', [GoalController::class, 'destroy']);
 
 
 Route::get('/superAdmins', [SuperAdminController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/catalog/users', [CatalogController::class, 'getUsers'])->middleware('auth:sanctum');
 Route::post('/superAdmins', [SuperAdminController::class, 'store'])->middleware('auth:sanctum');
 Route::get('/superAdmins/{superAdmin}', [SuperAdminController::class, 'show'])->middleware('auth:sanctum');
 Route::put('/superAdmins/{superAdmin}', [SuperAdminController::class, 'update'])->middleware('auth:sanctum');

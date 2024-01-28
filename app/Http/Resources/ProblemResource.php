@@ -21,6 +21,9 @@ class ProblemResource extends JsonResource
             'problem_img_path' => $this->problem_img_path,
             'description' => $this->description,
             'promoted_id' => $this->promoted_id,
+            'promoted' => $this->promoted,
+            'promoted_name' => $this->promoted->name,
+            'section_number' => $this->promoted->section->number,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
