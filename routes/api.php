@@ -47,6 +47,7 @@ Route::post("/superAdmins/{superAdmin}/upload-image", [SuperAdminController::cla
 Route::delete('/superAdmins/{superAdmin}', [SuperAdminController::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::get('/promotores', [PromotorController::class, 'index'])->middleware('auth:sanctum');
+Route::post("/promotores/{promotor}/upload-image", [PromotorController::class, 'uploadImage']);
 Route::post('/promotores', [PromotorController::class, 'store'])->middleware('auth:sanctum');
 Route::get('/promotores/{promotor}', [PromotorController::class, 'show'])->middleware('auth:sanctum');
 Route::put('/promotores/{promotor}', [PromotorController::class, 'update'])->middleware('auth:sanctum');

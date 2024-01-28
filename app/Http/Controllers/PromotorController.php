@@ -28,13 +28,34 @@ class PromotorController extends Controller
     public function showPromoteds($promotorId)
     {
         try {
-            $promotor = Promotor::findOrFail($promotorId);
+            $promotor = Promotor::with("promoteds")->findOrFail($promotorId);
             $promoteds = $promotor->getPromoteds();
 
             return response()->json(['promotor' => $promotor, 'promoteds' => $promoteds]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'No se encontró el promotor'], 404);
         }
+    }
+    public function uploadImage(Request $request, Promotor $promotor)
+    {
+        $validatedData = $request->validate([
+            'profile_img_path' => 'image|nullable|max:1999',
+        ]);
+        if ($request->hasFile('profile_img_path')) {
+            // Almacena la imagen en el disco 'public' en la carpeta 'images' y obtén su ruta
+            $path = $request->file('profile_img_path')->store('images', 'public');
+
+            // Agrega la ruta de la imagen a los datos validados
+            $validatedData['profile_path'] = $path;
+        }
+
+
+        // Si se sube una nueva imagen, manejar la subida de archivos aquí
+
+        $promotor->update($validatedData);
+
+
+        return response()->json(['message' => 'Promotor actualizado con éxito.', 'data' => $promotor]);
     }
 
     public function showPromotedsCount($promotorId)
@@ -99,7 +120,7 @@ class PromotorController extends Controller
     public function show($id)
     {
         // Busca un promotor por su ID junto con todas las relaciones cargadas ansiosamente.
-        $promotor = Promotor::with('municipal.districts',  'section.promoteds')->find($id);
+        $promotor = Promotor::with('municipal.districts',  'section.promoteds', "promoteds")->find($id);
 
         if (!$promotor) {
             return response()->json(['message' => 'Promotor no encontrado'], 404);
