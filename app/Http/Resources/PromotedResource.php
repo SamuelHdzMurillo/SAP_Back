@@ -26,6 +26,7 @@ class PromotedResource extends JsonResource
             'electoral_key' => $this->electoral_key,
             'curp' => $this->curp,
             'latitude' => $this->latitude,
+            'problems' => $this->problems,
             'longitude' => $this->longitude,
             'section_id' => $this->section_id,
             'district_id' => $this->section->district_id,
