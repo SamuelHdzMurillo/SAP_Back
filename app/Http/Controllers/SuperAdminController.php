@@ -58,9 +58,29 @@ class SuperAdminController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|unique:super_admins,email,' . $superAdmin->id,
             'phone_number' => 'required|numeric',
-            'profile_img_path' => 'image|nullable|max:1999',
             // No actualizar contraseña si no se proporciona una nueva
         ]);
+
+        // Si se sube una nueva imagen, manejar la subida de archivos aquí
+
+        $superAdmin->update($validatedData);
+
+        return response()->json(['message' => 'Super Admin actualizado con éxito.', 'data' => $superAdmin]);
+    }
+
+    public function uploadImage(Request $request, SuperAdmin $superAdmin)
+    {
+        $validatedData = $request->validate([
+            'profile_img_path' => 'image|nullable|max:1999',
+        ]);
+        if ($request->hasFile('profile_img_path')) {
+            // Almacena la imagen en el disco 'public' en la carpeta 'images' y obtén su ruta
+            $path = $request->file('profile_img_path')->store('images', 'public');
+
+            // Agrega la ruta de la imagen a los datos validados
+            $validatedData['profile_img_path'] = $path;
+        }
+
 
         // Si se sube una nueva imagen, manejar la subida de archivos aquí
 

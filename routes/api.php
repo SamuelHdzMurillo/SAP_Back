@@ -43,6 +43,7 @@ Route::get('/superAdmins', [SuperAdminController::class, 'index'])->middleware('
 Route::post('/superAdmins', [SuperAdminController::class, 'store'])->middleware('auth:sanctum');
 Route::get('/superAdmins/{superAdmin}', [SuperAdminController::class, 'show'])->middleware('auth:sanctum');
 Route::put('/superAdmins/{superAdmin}', [SuperAdminController::class, 'update'])->middleware('auth:sanctum');
+Route::post("/superAdmins/{superAdmin}/upload-image", [SuperAdminController::class, 'uploadImage']);
 Route::delete('/superAdmins/{superAdmin}', [SuperAdminController::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::get('/promotores', [PromotorController::class, 'index'])->middleware('auth:sanctum');
@@ -53,7 +54,7 @@ Route::delete('/promotores/{promotor}', [PromotorController::class, 'destroy'])-
 Route::get('/promotor/{promotorId}/promoteds', [PromotorController::class, 'showPromoteds'])->middleware('auth:sanctum');
 Route::get('/promotor/{promotorId}/promoteds/count', [PromotorController::class, 'showPromotedsCount'])->middleware('auth:sanctum');
 
-Route::get("/promoteds/map",[MapController::class, 'getPromoteds'])->middleware('auth:sanctum');
+Route::get("/promoteds/map", [MapController::class, 'getPromoteds'])->middleware('auth:sanctum');
 
 Route::get('/promoted', [PromotedController::class, 'index'])->middleware('auth:sanctum');
 Route::post('/promoted', [PromotedController::class, 'store'])->middleware('auth:sanctum');
