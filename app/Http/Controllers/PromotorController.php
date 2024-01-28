@@ -14,14 +14,20 @@ class PromotorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $req)
     {
         // Consulta para obtener todos los promotores junto con las relaciones ansiosamente cargadas
-        $promotores = Promotor::with('municipal.districts', 'section.promoteds')->paginate(10);
-
-        if ($promotores->isEmpty()) {
-            return response()->json(['message' => 'No se encontraron promotores'], 404);
+        $query = Promotor::with('municipal.districts', 'section.promoteds');
+        if ($req->has('name')) {
+            $query->where('name', 'like', '%' . $req->input('name') . '%');
         }
+        if ($req->has('phone_number')) {
+            $query->where('phone_number', 'like', '%' . $req->input('phone_number') . '%');
+        }
+        if ($req->has('email')) {
+            $query->where('email', 'like', '%' . $req->input('email') . '%');
+        }
+        $promotores = $query->paginate(10);
 
         return PromotorResource::collection($promotores);
     }

@@ -13,9 +13,19 @@ class SuperAdminController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $req)
     {
-        $superAdmins = SuperAdmin::orderBy("created_at", "desc")->paginate(10);
+        $query = SuperAdmin::orderBy("created_at", "desc");
+        if ($req->has('name')) {
+            $query->where('name', 'like', '%' . $req->input('name') . '%');
+        }
+        if ($req->has('phone_contact')) {
+            $query->where('phone_contact', 'like', '%' . $req->input('phone_contact') . '%');
+        }
+        if ($req->has('email')) {
+            $query->where('email', 'like', '%' . $req->input('email') . '%');
+        }
+        $superAdmins = $query->paginate(10);
         return  SuperAdminResource::collection($superAdmins);
     }
 

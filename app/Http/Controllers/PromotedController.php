@@ -19,9 +19,28 @@ class PromotedController extends Controller
     /**
      * Muestra una lista de los registros Promoted.
      */
-    public function index()
+    public function index(Request $req)
     {
-        $promoteds = Promoted::with('section', "promotor")->paginate(10);
+        $query = Promoted::with('section', "promotor");
+        if ($req->has('name')) {
+            $query->where('name', 'like', '%' . $req->input('name') . '%');
+        }
+        if ($req->has('phone_contact')) {
+            $query->where('phone_contact', 'like', '%' . $req->input('phone_contact') . '%');
+        }
+        if ($req->has('email')) {
+            $query->where('email', 'like', '%' . $req->input('email') . '%');
+        }
+        if ($req->has('adress')) {
+            $query->where('adress', 'like', '%' . $req->input('adress') . '%');
+        }
+        if ($req->has('electoral_key')) {
+            $query->where('electoral_key', 'like', '%' . $req->input('electoral_key') . '%');
+        }
+        if ($req->has('curp')) {
+            $query->where('curp', 'like', '%' . $req->input('curp') . '%');
+        }
+        $promoteds = $query->paginate(10);
         return PromotedResource::collection($promoteds);
     }
 
