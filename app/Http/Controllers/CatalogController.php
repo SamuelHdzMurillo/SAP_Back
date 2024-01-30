@@ -9,7 +9,9 @@ use App\Models\Municipal;
 use App\Models\District;
 use App\Models\Section;
 use App\Http\Resources\CatalogResource;
+use App\Models\Promoted;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class CatalogController extends Controller
 {
@@ -40,7 +42,7 @@ class CatalogController extends Controller
 
     public function getUsers()
     {
-        $users = User::all();
+        $users = Promoted::select("id as value", DB::raw("CONCAT(name, ' ', last_name) as label"))->get();
         return CatalogResource::collection($users);
     }
 }
