@@ -24,9 +24,8 @@ class PromotedExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
 
         return $promotedData->map(function ($promoted) {
             return [
-                'ID'            => $promoted->id,
                 'Nombre'        => $promoted->name,
-                'Apellidos'      => $promoted->second_name,
+                'Apellidos'      => $promoted->last_name,
                 'Clave de Elector'      => $promoted->electoral_key,
                 'Curp'      => $promoted->curp,
                 'Teléfono'      => $promoted->phone_number,
@@ -41,10 +40,9 @@ class PromotedExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
     public function headings(): array
     {
         return [
-            'ID',
+
             'Nombre',
             'Apellido Materno',
-            'Apellido Paterno',
             'Clave de Elector',
             'Curp',
             'Teléfono',
