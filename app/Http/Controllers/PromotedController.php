@@ -25,8 +25,8 @@ class PromotedController extends Controller
         if ($req->has('name')) {
             $query->where('name', 'like', '%' . $req->input('name') . '%');
         }
-        if ($req->has('phone_contact')) {
-            $query->where('phone_contact', 'like', '%' . $req->input('phone_contact') . '%');
+        if ($req->has('phone_number')) {
+            $query->where('phone_number', 'like', '%' . $req->input('phone_number') . '%');
         }
         if ($req->has('email')) {
             $query->where('email', 'like', '%' . $req->input('email') . '%');
@@ -40,7 +40,7 @@ class PromotedController extends Controller
         if ($req->has('curp')) {
             $query->where('curp', 'like', '%' . $req->input('curp') . '%');
         }
-        $promoteds = $query->paginate(10);
+        $promoteds = $query->orderBy("created_at", "desc")->paginate(10);
         return PromotedResource::collection($promoteds);
     }
 

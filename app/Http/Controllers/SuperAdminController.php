@@ -19,8 +19,8 @@ class SuperAdminController extends Controller
         if ($req->has('name')) {
             $query->where('name', 'like', '%' . $req->input('name') . '%');
         }
-        if ($req->has('phone_contact')) {
-            $query->where('phone_contact', 'like', '%' . $req->input('phone_contact') . '%');
+        if ($req->has('phone_number')) {
+            $query->where('phone_number', 'like', '%' . $req->input('phone_number') . '%');
         }
         if ($req->has('email')) {
             $query->where('email', 'like', '%' . $req->input('email') . '%');

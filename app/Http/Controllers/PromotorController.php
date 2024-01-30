@@ -27,7 +27,15 @@ class PromotorController extends Controller
         if ($req->has('email')) {
             $query->where('email', 'like', '%' . $req->input('email') . '%');
         }
-        $promotores = $query->paginate(10);
+        if ($req->has('municipal_name')) {
+            $query->whereHas('municipal', function ($q) use ($req) {
+                $q->where('name', 'like', '%' . $req->input('municipal_name') . '%');
+            });
+        }
+        if($req->has("position")){
+            $query->where("position", $req->input("position"));
+        }
+        $promotores = $query->orderBy("created_at", "desc")->paginate(10);
 
         return PromotorResource::collection($promotores);
     }
@@ -117,7 +125,9 @@ class PromotorController extends Controller
         }
 
         $promotor = Promotor::create($validatedData);
-        return response()->json(['message' => 'Promotor creado con éxito.', 'data' => $promotor], 201);
+        $promotorAdded = Promotor::with("municipal")->find($promotor->id);
+        $promotorAdded["municipal_name"] = $promotorAdded["municipal"]["name"];
+        return response()->json(['message' => 'Promotor creado con éxito.', 'data' => $promotorAdded], 201);
     }
 
     /**
@@ -160,7 +170,9 @@ class PromotorController extends Controller
         }
 
         $promotor->update($validator->validated());
-        return response()->json($promotor);
+        $promotorUpdated = Promotor::with("municipal")->find($id);
+        $promotorUpdated["municipal_name"] = $promotorUpdated["municipal"]["name"];
+        return response()->json($promotorUpdated);
     }
 
     /**
