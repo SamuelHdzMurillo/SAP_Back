@@ -71,5 +71,6 @@ class Promotor extends Authenticatable
     }
 
 
+
     // Aquí puedes añadir otras relaciones o métodos personalizados si es necesario.
 }

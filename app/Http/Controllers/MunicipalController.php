@@ -110,6 +110,47 @@ class MunicipalController extends Controller
         return response()->json(['counts' => $counts]);
     }
 
+    public function getAllDataWithFilters(Request $request)
+    {
+        // Filtros opcionales
+        $municipalName = $request->input('municipal_name');
+        $districtNumber = $request->input('district_number');
+        $sectionNumber = $request->input('section_number');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Consulta principal
+        $query = Municipal::with(['districts.sections.promoteds']);
+
+        // Aplicar filtros si se proporcionan
+        if ($municipalName) {
+            $query->where('name', $municipalName);
+        }
+
+        $query->whereHas('districts', function ($query) use ($districtNumber, $sectionNumber, $startDate, $endDate) {
+            if ($districtNumber) {
+                $query->where('number', $districtNumber);
+            }
+
+            $query->whereHas('sections', function ($query) use ($sectionNumber, $startDate, $endDate) {
+                if ($sectionNumber) {
+                    $query->where('number', $sectionNumber);
+                }
+
+                if ($startDate && $endDate) {
+                    $query->whereHas('promoteds', function ($query) use ($startDate, $endDate) {
+                        $query->whereBetween('created_at', [$startDate, $endDate]);
+                    });
+                }
+            });
+        });
+
+        $data = $query->get();
+
+        return response()->json(['data' => $data]);
+    }
+
+
     public function countPromovedsInSectionsByDate()
     {
         $counts = DB::table('promoteds')
@@ -128,14 +169,22 @@ class MunicipalController extends Controller
         $counts = DB::table('promoteds')
             ->join('sections', 'promoteds.section_id', '=', 'sections.id')
             ->join('districts', 'sections.district_id', '=', 'districts.id')
-            ->select('districts.number as district_number', DB::raw('DATE(promoteds.created_at) as date'), DB::raw('count(*) as promoved_count'))
-            ->groupBy('districts.number', 'date')
+            ->join('municipals', 'districts.municipal_id', '=', 'municipals.id') // Unir con la tabla municipals
+            ->select(
+                'municipals.name as municipal_name', // Seleccionar el nombre del municipio
+                'districts.number as district_number',
+                DB::raw('DATE(promoteds.created_at) as date'),
+                DB::raw('count(*) as promoved_count')
+            )
+            ->groupBy('municipals.name', 'districts.number', 'date') // Agrupar también por el nombre del municipio
+            ->orderBy('municipals.name', 'asc') // Ordenar primero por el nombre del municipio
             ->orderBy('districts.number', 'asc')
             ->orderBy('date', 'asc')
             ->get();
 
         return response()->json(['counts' => $counts]);
     }
+
 
     public function sectionsWithPromovedCount()
     {

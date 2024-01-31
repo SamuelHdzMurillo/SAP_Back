@@ -48,6 +48,11 @@ class Municipal extends Model
         return $this->hasMany(Goal::class);
     }
 
+    public function promotedsd()
+    {
+        return $this->hasManyThrough(Promoted::class, District::class);
+    }
+
 
     // Aquí puedes agregar otras relaciones o lógica de negocio específica de tu modelo
 }

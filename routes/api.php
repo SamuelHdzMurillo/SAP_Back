@@ -101,3 +101,5 @@ Route::get("/dashboard/promoteds-count-by-dates", [PromotedController::class, 'g
 
 Route::get('/municipals/by-date-range', [MunicipalController::class, 'getMunicipalsByDateRange']);
 Route::get('/municipals/total-promoteds', [MunicipalController::class, 'totalPromotedsByMunicipality']);
+
+Route::get('/municipals/filters', [MunicipalController::class, 'getAllDataWithFilters']);
