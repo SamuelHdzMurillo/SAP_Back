@@ -10,7 +10,7 @@ class MapController extends Controller
 {
     public function getPromoteds()
     {
-        $promoteds = Promoted::all();
+        $promoteds = Promoted::with("section")->get();
         return MapResource::collection($promoteds);
     }
 }

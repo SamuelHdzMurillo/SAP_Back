@@ -16,8 +16,12 @@ class MapResource extends JsonResource
     {
         return [
             "id" => $this->id,
+            "name" => $this->name,
+            "phone_number" => $this->phone_number,
+            "email" => $this->email,
             "lat" => $this->latitude,
             "lng" => $this->longitude,
+            "section" => $this->section->number,
         ];
     }
 }
