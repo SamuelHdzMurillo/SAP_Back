@@ -152,17 +152,23 @@ class PromotedController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'second_name' => 'string|max:255|nullable', // Añadido y marcado como nullable
             'last_name' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255',
-            'email' => 'required|email|unique:promoteds,email',
+            'email' => 'email|max:255|unique:promoteds,email|nullable', // Corregido para permitir nullable
+            'section' => 'required|string|max:255', // Añadido como requerido según tu esquema, pero parece extra dado que también tienes section_id
             'adress' => 'required|string|max:255',
-            'electoral_key' => 'required|string|max:255',
-            'curp' => 'required|string|max:255',
+            'colony' => 'required|string|max:255', // Marcado como requerido según tu esquema
+            'postal_code' => 'required|string|max:255', // Marcado como requerido según tu esquema
+            'house_number' => 'required|string|max:255', // Marcado como requerido según tu esquema
+            'electoral_key' => 'string|max:255|nullable', // Marcado como nullable
+            'curp' => 'string|max:255|nullable', // Marcado como nullable
             'latitude' => 'required|string|max:255',
             'longitude' => 'required|string|max:255',
-            'section_id' => 'required|integer|exists:sections,id',
-            'promotor_id' => 'required|integer|exists:sections,id' // Asegúrate de que el ID de sección exista
+            'section_id' => 'required|integer|exists:sections,id', // Verificación de existencia en tabla sections
+            'promotor_id' => 'required|integer|exists:promotors,id' // Corregido para verificar existencia en tabla promotors
         ]);
+
 
 
         if ($validator->fails()) {
@@ -198,16 +204,21 @@ class PromotedController extends Controller
         }
 
         $promoted->name = strlen($request->input('name')) > 0 ? $request->input('name') : $promoted->name;
+        $promoted->second_name = strlen($request->input('second_name')) > 0 ? $request->input('second_name') : $promoted->second_name; // Añadido
         $promoted->last_name = strlen($request->input('last_name')) > 0 ? $request->input('last_name') : $promoted->last_name;
         $promoted->phone_number = strlen($request->input('phone_number')) > 0 ? $request->input('phone_number') : $promoted->phone_number;
         $promoted->email = strlen($request->input('email')) > 0 ? $request->input('email') : $promoted->email;
         $promoted->adress = strlen($request->input('adress')) > 0 ? $request->input('adress') : $promoted->adress;
+        $promoted->colony = strlen($request->input('colony')) > 0 ? $request->input('colony') : $promoted->colony; // Añadido
+        $promoted->postal_code = strlen($request->input('postal_code')) > 0 ? $request->input('postal_code') : $promoted->postal_code; // Añadido
+        $promoted->house_number = strlen($request->input('house_number')) > 0 ? $request->input('house_number') : $promoted->house_number; // Añadido
         $promoted->electoral_key = strlen($request->input('electoral_key')) > 0 ? $request->input('electoral_key') : $promoted->electoral_key;
         $promoted->curp = strlen($request->input('curp')) > 0 ? $request->input('curp') : $promoted->curp;
         $promoted->latitude = strlen($request->input('latitude')) > 0 ? $request->input('latitude') : $promoted->latitude;
         $promoted->longitude = strlen($request->input('longitude')) > 0 ? $request->input('longitude') : $promoted->longitude;
         $promoted->section_id = $request->input('section_id') > 0 ? $request->input('section_id') : $promoted->section_id;
         $promoted->promotor_id = $request->input('promotor_id') > 0 ? $request->input('promotor_id') : $promoted->promotor_id;
+
         $promoted->save();
         DB::commit();
         return response()->json($promoted, 200);

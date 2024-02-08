@@ -9,16 +9,30 @@ class GoalController extends Controller
 {
     public function index()
     {
-        $goals = Goal::with('municipal')->get()->map(function ($goal) {
+        $goals = Goal::with(['municipal' => function ($query) {
+            $query->with(['districts.sections.promoteds']);
+        }])->get()->map(function ($goal) {
+            // Conteo manual de promovidos
+            $promotedCount = 0;
+            foreach ($goal->municipal->districts as $district) {
+                foreach ($district->sections as $section) {
+                    $promotedCount += $section->promoteds->count();
+                }
+            }
+
             return [
-                'municipal_name' => $goal->municipal->name, // Nombre del municipio
+                'municipal_name' => $goal->municipal->name,
+                'promoted_count' => $promotedCount,  // Nombre del municipio
                 'goal_name' => $goal->goalName,            // Nombre de la meta
-                'goal_value' => $goal->goalValue           // Valor de la meta
+                'goal_value' => $goal->goalValue,          // Valor de la meta
+                // Total de promovidos por municipio ajustado
             ];
         });
 
         return response()->json(['goals' => $goals]);
     }
+
+
 
     public function store(Request $request)
     {

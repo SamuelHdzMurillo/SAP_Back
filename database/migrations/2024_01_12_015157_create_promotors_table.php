@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('promotors', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("email")->unique()->nullable(); 
+            $table->string("email")->unique()->nullable();
             $table->string("phone_number")->unique()->nullable();
             $table->string("position");
-            $table->string("profile_path"); 
-            $table->string("ine_path"); 
+            $table->string("profile_path");
+            $table->string("ine_path")->nullable();
             $table->string("username");
             $table->string('password');
             $table->rememberToken();
@@ -26,7 +26,6 @@ return new class extends Migration
             $table->foreignId("section_id")->constrained('sections');
             $table->timestamps();
         });
-        
     }
 
     /**

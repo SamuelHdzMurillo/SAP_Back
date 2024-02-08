@@ -21,6 +21,9 @@ class PromotedSeeder extends Seeder
                 'last_name' => 'Apellido',
                 'phone_number' => '1234567890',
                 'email' => 'promovido1@example.com',
+                'colony' => 'Colonia Ejemplo', // Campo añadido
+                'postal_code' => '12345', // Campo añadido
+                'house_number' => '123', // Campo añadido
 
                 'adress' => 'Calle Ficticia 123',
                 'electoral_key' => Str::random(18),
@@ -36,6 +39,9 @@ class PromotedSeeder extends Seeder
                 'last_name' => 'Apellido',
                 'phone_number' => '0987654321',
                 'email' => 'promovido2@example.com',
+                'colony' => 'Colonia Ejemplo', // Campo añadido
+                'postal_code' => '12345', // Campo añadido
+                'house_number' => '123', // Campo añadido
 
                 'adress' => 'Calle Ficticia 456',
                 'electoral_key' => Str::random(18),

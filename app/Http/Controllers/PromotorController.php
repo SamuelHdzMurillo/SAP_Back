@@ -32,7 +32,7 @@ class PromotorController extends Controller
                 $q->where('name', 'like', '%' . $req->input('municipal_name') . '%');
             });
         }
-        if($req->has("position")){
+        if ($req->has("position")) {
             $query->where("position", $req->input("position"));
         }
         $promotores = $query->orderBy("created_at", "desc")->paginate(10);
@@ -86,6 +86,47 @@ class PromotorController extends Controller
             return response()->json(['error' => 'No se encontró el promotor'], 404);
         }
     }
+
+    public function showPromotedsCountByMunicipality($promotorId)
+    {
+        try {
+            $promotor = Promotor::with('municipal.districts.sections.promoteds')->findOrFail($promotorId);
+            $municipal = $promotor->municipal;
+
+            if ($municipal) {
+                $distribution = [];
+
+                // Recorrer cada distrito del municipio
+                foreach ($municipal->districts as $district) {
+                    // Recorrer cada sección del distrito
+                    foreach ($district->sections as $section) {
+                        // Agregar al arreglo la distribución de promovidos por sección
+                        $distribution[] = [
+                            'municipal_name' => $municipal->name, // Nombre del municipio
+                            'district_name' => $district->number, // Nombre del distrito
+                            'section_number' => $section->number, // Número de la sección
+                            'promoteds_count' => $section->promoteds->count() // Cantidad de promovidos en la sección
+                        ];
+                    }
+                }
+
+                return response()->json([
+                    'promotor' => $promotor->name, // Nombre del promotor
+                    'total_promoteds_count' => collect($distribution)->sum('promoteds_count'), // Total de promovidos en el municipio
+                    'distribution' => $distribution // Distribución de promovidos por sección, distrito y municipio
+                ]);
+            } else {
+                // En caso de que el promotor no esté asociado a un municipio
+                return response()->json(['error' => 'El promotor no está asociado a un municipio'], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'No se encontró el promotor: ' . $e->getMessage()], 404);
+        }
+    }
+
+
+
+
 
 
 

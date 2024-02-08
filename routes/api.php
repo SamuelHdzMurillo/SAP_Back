@@ -56,6 +56,8 @@ Route::delete('/promotores/{promotor}', [PromotorController::class, 'destroy'])-
 Route::get('/promotor/{promotorId}/promoteds', [PromotorController::class, 'showPromoteds'])->middleware('auth:sanctum');
 Route::get('/promotor/{promotorId}/promoteds/count', [PromotorController::class, 'showPromotedsCount'])->middleware('auth:sanctum');
 
+Route::get('/promotors/{promotorId}/promoteds-count-by-municipality', [PromotorController::class, 'showPromotedsCountByMunicipality']);
+
 Route::get("/promoteds/map", [MapController::class, 'getPromoteds'])->middleware('auth:sanctum');
 
 Route::get('/promoted', [PromotedController::class, 'index'])->middleware('auth:sanctum');

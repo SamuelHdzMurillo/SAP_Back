@@ -21,7 +21,10 @@ class Promoted extends Model
         'latitude',
         'longitude',
         'section_id',
-        'promotor_id'
+        'promotor_id',
+        'colony',
+        'postal_code',
+        'house_number'
     ];
 
     /**
@@ -29,7 +32,7 @@ class Promoted extends Model
      */
     public function section()
     {
-        return $this->belongsTo(Section::class,'section_id');
+        return $this->belongsTo(Section::class, 'section_id');
     }
 
     public function promotor()
