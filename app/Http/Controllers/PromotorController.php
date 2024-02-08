@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PromotorResource;
 use App\Models\Promotor;
+use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -123,6 +124,69 @@ class PromotorController extends Controller
             return response()->json(['error' => 'No se encontró el promotor: ' . $e->getMessage()], 404);
         }
     }
+
+    public function showPromotedsCountOnlyByMunicipality($promotorId)
+    {
+        try {
+            $promotor = Promotor::with('municipal.districts.sections.promoteds')->findOrFail($promotorId);
+            $municipal = $promotor->municipal;
+
+            if ($municipal) {
+                $promotedsCount = 0;
+                foreach ($municipal->districts as $district) {
+                    foreach ($district->sections as $section) {
+                        $promotedsCount += $section->promoteds->count();
+                    }
+                }
+
+                return response()->json([
+                    'promotor' => $promotor->name, // Nombre del promotor
+                    'municipal_name' => $municipal->name, // Nombre del municipio
+                    'promotedsCount' => $promotedsCount // Cantidad de promovidos en el municipio corregido
+                ]);
+            } else {
+                // En caso de que el promotor no esté asociado a un municipio
+                return response()->json(['error' => 'El promotor no está asociado a un municipio'], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'No se encontró el promotor: ' . $e->getMessage()], 404);
+        }
+    }
+
+    public function showPromotedsCountByDistrict($promotorId, $districtId)
+    {
+        try {
+            $promotor = Promotor::findOrFail($promotorId);
+            $municipal = $promotor->municipal;
+
+            if ($municipal) {
+                $promotedsCount = 0;
+
+                // Asegurarte de que solo estás contando los promovidos en secciones que pertenecen al distrito especificado
+                $sections = Section::whereHas('district', function ($query) use ($districtId) {
+                    $query->where('id', $districtId);
+                })->pluck('id');
+
+                if ($sections->isNotEmpty()) {
+                    $promotedsCount = Promoted::whereIn('section_id', $sections)->count();
+                }
+
+                return response()->json([
+                    'promotor' => $promotor->name, // Nombre del promotor
+                    'municipal_name' => $municipal->name, // Nombre del municipio
+                    'district_id' => $districtId, // ID del distrito solicitado
+                    'promotedsCount' => $promotedsCount, // Cantidad de promovidos en el distrito especificado
+                ]);
+            } else {
+                // En caso de que el promotor no esté asociado a un municipio
+                return response()->json(['error' => 'El promotor no está asociado a un municipio'], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'No se encontró el promotor: ' . $e->getMessage()], 404);
+        }
+    }
+
+
 
 
 
