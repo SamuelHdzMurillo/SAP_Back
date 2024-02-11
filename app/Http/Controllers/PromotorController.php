@@ -101,19 +101,26 @@ class PromotorController extends Controller
                 foreach ($municipal->districts as $district) {
                     // Recorrer cada sección del distrito
                     foreach ($district->sections as $section) {
-                        // Agregar al arreglo la distribución de promovidos por sección
-                        $distribution[] = [
-                            'municipal_name' => $municipal->name, // Nombre del municipio
-                            'district_name' => $district->number, // Nombre del distrito
-                            'section_number' => $section->number, // Número de la sección
-                            'promoteds_count' => $section->promoteds->count() // Cantidad de promovidos en la sección
-                        ];
+                        // Filtrar los promovidos que están relacionados con el promotor específico
+                        $relatedPromoteds = $section->promoteds->filter(function ($promoted) use ($promotorId) {
+                            return $promoted->promotor_id == $promotorId; // Asumiendo que los promovidos tienen un campo 'promotor_id'
+                        });
+
+                        // Agregar al arreglo la distribución de promovidos por sección, solo si hay promovidos relacionados
+                        if ($relatedPromoteds->isNotEmpty()) {
+                            $distribution[] = [
+                                'municipal_name' => $municipal->name, // Nombre del municipio
+                                'district_name' => $district->number, // Número del distrito
+                                'section_number' => $section->number, // Número de la sección
+                                'promoteds_count' => $relatedPromoteds->count() // Cantidad de promovidos en la sección relacionados con el promotor
+                            ];
+                        }
                     }
                 }
 
                 return response()->json([
                     'promotor' => $promotor->name, // Nombre del promotor
-                    'total_promoteds_count' => collect($distribution)->sum('promoteds_count'), // Total de promovidos en el municipio
+                    'total_promoteds_count' => collect($distribution)->sum('promoteds_count'), // Total de promovidos relacionados en el municipio
                     'distribution' => $distribution // Distribución de promovidos por sección, distrito y municipio
                 ]);
             } else {
@@ -124,6 +131,7 @@ class PromotorController extends Controller
             return response()->json(['error' => 'No se encontró el promotor: ' . $e->getMessage()], 404);
         }
     }
+
 
     public function showPromotedsCountOnlyByMunicipality($promotorId)
     {
