@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PromotorResource;
 use App\Models\Promotor;
 use App\Models\Section;
+use App\Models\Municipal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -92,11 +93,13 @@ class PromotorController extends Controller
     {
         try {
             $promotor = Promotor::with('municipal.districts.sections.promoteds')->findOrFail($promotorId);
-            $municipal = $promotor->municipal;
 
-            if ($municipal) {
-                $distribution = [];
+            $distribution = [];
 
+            // Recorrer todos los municipios
+            $municipalities = Municipal::with('districts.sections.promoteds')->get();
+
+            foreach ($municipalities as $municipal) {
                 // Recorrer cada distrito del municipio
                 foreach ($municipal->districts as $district) {
                     // Recorrer cada sección del distrito
@@ -117,20 +120,18 @@ class PromotorController extends Controller
                         }
                     }
                 }
-
-                return response()->json([
-                    'promotor' => $promotor->name, // Nombre del promotor
-                    'total_promoteds_count' => collect($distribution)->sum('promoteds_count'), // Total de promovidos relacionados en el municipio
-                    'distribution' => $distribution // Distribución de promovidos por sección, distrito y municipio
-                ]);
-            } else {
-                // En caso de que el promotor no esté asociado a un municipio
-                return response()->json(['error' => 'El promotor no está asociado a un municipio'], 404);
             }
+
+            return response()->json([
+                'promotor' => $promotor->name, // Nombre del promotor
+                'total_promoteds_count' => collect($distribution)->sum('promoteds_count'), // Total de promovidos relacionados en todos los municipios
+                'distribution' => $distribution // Distribución de promovidos por sección, distrito y municipio
+            ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'No se encontró el promotor: ' . $e->getMessage()], 404);
         }
     }
+
 
 
     public function showPromotedsCountOnlyByMunicipality($promotorId)
