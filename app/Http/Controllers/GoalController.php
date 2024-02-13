@@ -36,15 +36,25 @@ class GoalController extends Controller
 
     public function store(Request $request)
     {
+        // Validar los datos de la solicitud
         $validatedData = $request->validate([
             'goalName' => 'required|max:255',
             'goalValue' => 'required|integer',
             'municipal_id' => 'required|exists:municipals,id'
         ]);
-
+    
+        // Crear un nuevo objetivo con los datos validados
         $goal = Goal::create($validatedData);
-        return response()->json(['message' => 'Goal created successfully', 'goal' => $goal], 201);
+    
+        // Devolver la respuesta con el mensaje y los detalles del objetivo creado
+        return response()->json(['message' => 'Goal created successfully', 'goal' => [
+            'municipal_name' => $goal->municipal->name,
+            'promoted_count' => 0,  // Ajustar según tus necesidades
+            'goal_name' => $goal->goalName,
+            'goal_value' => $goal->goalValue,
+        ]], 201);
     }
+    
 
     public function show(Goal $goal)
     {
