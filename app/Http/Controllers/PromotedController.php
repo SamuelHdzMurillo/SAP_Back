@@ -156,7 +156,6 @@ class PromotedController extends Controller
             'last_name' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255',
             'email' => 'email|max:255|unique:promoteds,email|nullable', // Corregido para permitir nullable
-            'section' => 'required|string|max:255', // Añadido como requerido según tu esquema, pero parece extra dado que también tienes section_id
             'adress' => 'required|string|max:255',
             'colony' => 'required|string|max:255', // Marcado como requerido según tu esquema
             'postal_code' => 'required|string|max:255', // Marcado como requerido según tu esquema
@@ -204,7 +203,7 @@ class PromotedController extends Controller
         }
 
         $promoted->name = strlen($request->input('name')) > 0 ? $request->input('name') : $promoted->name;
-        $promoted->second_name = strlen($request->input('second_name')) > 0 ? $request->input('second_name') : $promoted->second_name; // Añadido
+        
         $promoted->last_name = strlen($request->input('last_name')) > 0 ? $request->input('last_name') : $promoted->last_name;
         $promoted->phone_number = strlen($request->input('phone_number')) > 0 ? $request->input('phone_number') : $promoted->phone_number;
         $promoted->email = strlen($request->input('email')) > 0 ? $request->input('email') : $promoted->email;
