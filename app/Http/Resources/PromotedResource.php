@@ -32,6 +32,9 @@ class PromotedResource extends JsonResource
             'district_id' => $this->section->district_id,
             'municipal_id' => $this->section->district->municipal_id,
             'promotor_id' => $this->promotor_id,
+            'colony' => $this->colony,
+            'postal_code' => $this->postal_code,
+            'house_number' => $this->house_number,
         ];
     }
 }
