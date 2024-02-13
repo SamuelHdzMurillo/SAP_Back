@@ -21,6 +21,7 @@ class GoalController extends Controller
             }
 
             return [
+                'id' => $goal->id,
                 'municipal_name' => $goal->municipal->name,
                 'promoted_count' => $promotedCount,  // Nombre del municipio
                 'goal_name' => $goal->goalName,            // Nombre de la meta
@@ -36,15 +37,35 @@ class GoalController extends Controller
 
     public function store(Request $request)
     {
+        // Validar los datos de la solicitud
         $validatedData = $request->validate([
             'goalName' => 'required|max:255',
             'goalValue' => 'required|integer',
             'municipal_id' => 'required|exists:municipals,id'
         ]);
 
+        // Crear un nuevo objetivo con los datos validados
         $goal = Goal::create($validatedData);
-        return response()->json(['message' => 'Goal created successfully', 'goal' => $goal], 201);
+
+        // Conteo manual de promovidos
+        $promotedCount = 0;
+        foreach ($goal->municipal->districts as $district) {
+            foreach ($district->sections as $section) {
+                $promotedCount += $section->promoteds->count();
+            }
+        }
+
+        // Devolver la respuesta con el mensaje, los detalles del objetivo creado y el conteo de promovidos
+        return response()->json(['message' => 'Goal created successfully', 'goal' => [
+            'id' => $goal->id,
+            'municipal_name' => $goal->municipal->name,
+            'promoted_count' => $promotedCount,
+            'goal_name' => $goal->goalName,
+            'goal_value' => $goal->goalValue,
+        ]], 201);
     }
+
+
 
     public function show(Goal $goal)
     {
