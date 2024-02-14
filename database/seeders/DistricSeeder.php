@@ -40,7 +40,11 @@ class DistricSeeder extends Seeder
             {
              "distrito": 13,
              "municipal": "comondu"
-            },        
+            },
+            {
+                "distrito": 13,
+                "municipal": "loreto"
+               },        
             {
              "distrito": 14,
              "municipal": "Mulege"
