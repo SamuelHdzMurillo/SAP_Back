@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\PromotedImport;
 use App\Exports\PromotedExport;
+use App\Exports\PromotedTemplateExport;
 use App\Http\Resources\PromotedResource;
 use App\Http\Resources\PromotedsDashboard;
 use App\Models\Promotor;
@@ -144,6 +145,11 @@ class PromotedController extends Controller
         return Excel::download(new PromotedExport, 'Promovidos.xlsx');
     }
 
+    public function exportTemplate()
+    {
+        return Excel::download(new PromotedTemplateExport, 'Promovidos.xlsx');
+    }
+
 
     /**
      * Guarda un nuevo registro Promoted.
@@ -203,7 +209,7 @@ class PromotedController extends Controller
         }
 
         $promoted->name = strlen($request->input('name')) > 0 ? $request->input('name') : $promoted->name;
-        
+
         $promoted->last_name = strlen($request->input('last_name')) > 0 ? $request->input('last_name') : $promoted->last_name;
         $promoted->phone_number = strlen($request->input('phone_number')) > 0 ? $request->input('phone_number') : $promoted->phone_number;
         $promoted->email = strlen($request->input('email')) > 0 ? $request->input('email') : $promoted->email;
