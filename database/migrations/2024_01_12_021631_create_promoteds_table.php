@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string("section");
             $table->string("adress");
             $table->string("colony")->nullable();
-            $table->string("postal_code");
-            $table->string("house_number")->nullable();;
+            $table->string("postal_code")->nullable();
+            $table->string("house_number")->nullable();
             $table->string("electoral_key")->nullable();
             $table->string("curp")->nullable();
             $table->string("latitude");
