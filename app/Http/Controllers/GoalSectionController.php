@@ -39,7 +39,7 @@ class GoalSectionController extends Controller
             ];
         });
 
-        return response()->json(['goals_section' => $goalsSection]);
+        return response()->json(['goals' => $goalsSection]);
     }
 
     public function store(Request $request)

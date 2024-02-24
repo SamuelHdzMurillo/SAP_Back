@@ -45,7 +45,7 @@ class GoalDistrictController extends Controller
             ];
         });
 
-        return response()->json(['goals_district' => $goalsDistrict]);
+        return response()->json(['goals' => $goalsDistrict]);
     }
 
 
