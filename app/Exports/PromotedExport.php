@@ -15,6 +15,7 @@ class PromotedExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
     use Exportable;
 
     private $sectionId;
+    private $districtId;
 
     public function forSection($sectionId)
     {
@@ -23,12 +24,25 @@ class PromotedExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
         return $this;
     }
 
+    public function forDistrict($districtId)
+    {
+        $this->districtId = $districtId;
+
+        return $this;
+    }
+
     public function collection()
     {
-        $query = Promoted::with('problems');
+        $query = Promoted::with(['problems', 'section.district']);
 
         if ($this->sectionId) {
             $query->where('section_id', $this->sectionId);
+        }
+
+        if ($this->districtId) {
+            $query->whereHas('section', function ($query) {
+                $query->where('district_id', $this->districtId);
+            });
         }
 
         $promotedData = $query->get();
@@ -42,6 +56,7 @@ class PromotedExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
                 'Teléfono'      => $promoted->phone_number,
                 'Correo'        => $promoted->email,
                 'Sección'       => $promoted->section->number,
+                'Distrito'      => $promoted->section->district->number,
                 'Dirección'     => $promoted->adress,
                 // Otras columnas que desees exportar
             ];
@@ -58,6 +73,7 @@ class PromotedExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
             'Teléfono',
             'Correo',
             'Sección',
+            'Distrito',
             'Dirección',
             // Otros encabezados
         ];

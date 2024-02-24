@@ -86,6 +86,7 @@ Route::delete('/promoted/{id}', [PromotedController::class, 'destroy'])->middlew
 Route::post('/upload-excel/{promotorId}', [PromotedController::class, 'uploadExcel'])->middleware('auth:sanctum');
 Route::get('/export-excel', [PromotedController::class, 'export'])->middleware('auth:sanctum');
 Route::get('/export/section/{sectionId}', [PromotedController::class, 'exportBySection']);
+Route::get('/export/district/{districtId}', [PromotedController::class, 'exportByDistrict']);
 Route::get('/export-excel-template', [PromotedController::class, 'exportTemplate']);
 
 Route::get('/municipals', [MunicipalController::class, 'index'])->middleware('auth:sanctum');
