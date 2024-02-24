@@ -12,15 +12,26 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class PromotedExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-
     use Exportable;
+
+    private $sectionId;
+
+    public function forSection($sectionId)
+    {
+        $this->sectionId = $sectionId;
+
+        return $this;
+    }
 
     public function collection()
     {
-        $promotedData = Promoted::with('problems')->get();
+        $query = Promoted::with('problems');
+
+        if ($this->sectionId) {
+            $query->where('section_id', $this->sectionId);
+        }
+
+        $promotedData = $query->get();
 
         return $promotedData->map(function ($promoted) {
             return [
@@ -40,7 +51,6 @@ class PromotedExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
     public function headings(): array
     {
         return [
-
             'Nombre',
             'Apellido Materno',
             'Clave de Elector',

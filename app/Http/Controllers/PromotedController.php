@@ -145,6 +145,14 @@ class PromotedController extends Controller
         return Excel::download(new PromotedExport, 'Promovidos.xlsx');
     }
 
+    public function exportBySection(Request $request, $sectionId)
+    {
+        $export = new PromotedExport();
+        $export->forSection($sectionId);
+
+        return Excel::download($export, 'Promovidos_seccion_' . $sectionId . '.xlsx');
+    }
+
     public function exportTemplate()
     {
         return Excel::download(new PromotedTemplateExport, 'Promovidos.xlsx');
