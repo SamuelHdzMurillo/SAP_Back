@@ -72,7 +72,7 @@ class GoalDistrictController extends Controller
         }
 
         // Devolver la respuesta con el mensaje, los detalles del objetivo de distrito creado y el conteo de promovidos
-        return response()->json(['message' => 'Goal District created successfully', 'goal_district' => [
+        return response()->json(['message' => 'Goal District created successfully', 'goal' => [
             'id' => $goalDistrict->id,
             'district_name' => $goalDistrict->district->number,
             'promoted_count' => $promotedCount,
@@ -123,7 +123,7 @@ class GoalDistrictController extends Controller
         }
 
         // Devolver la respuesta con el mensaje, los detalles del objetivo de distrito actualizado y el conteo de promovidos
-        return response()->json(['message' => 'Goal District updated successfully', 'goal_district' => [
+        return response()->json(['message' => 'Goal District updated successfully', 'goal' => [
             'id' => $goalDistrict->id,
             'district_name' => $goalDistrict->district->number,
             'promoted_count' => $promotedCount,
