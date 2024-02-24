@@ -12,6 +12,7 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\Auth\SuperAdminAuthController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\GoalDistrictController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,11 @@ Route::post('/goals', [GoalController::class, 'store']);
 Route::put('/goals/{goal}', [GoalController::class, 'update']);
 Route::delete('/goals/{goal}', [GoalController::class, 'destroy']);
 
-
+Route::get('/goals-district', [GoalDistrictController::class, 'index']);
+Route::get('/goals-district/{goalDistrict}', [GoalDistrictController::class, 'show']);
+Route::post('/goals-district', [GoalDistrictController::class, 'store']);
+Route::put('/goals-district/{goalDistrict}', [GoalDistrictController::class, 'update']);
+Route::delete('/goals-district/{goalDistrict}', [GoalDistrictController::class, 'destroy']);
 
 
 Route::get('/superAdmins', [SuperAdminController::class, 'index'])->middleware('auth:sanctum');
