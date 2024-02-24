@@ -23,7 +23,7 @@ class PromotedTemplateExport implements FromCollection, WithHeadings, ShouldAuto
             'apellidos',
             'numero Telefónico',
             'correo',
-            'dirección',
+            'direccion',
             'clave Electoral',
             'curp',
             'latitude',
@@ -31,7 +31,7 @@ class PromotedTemplateExport implements FromCollection, WithHeadings, ShouldAuto
             'colonia',
             'codigo Postal',
             'numero Ext',
-            'seccion',
+            'section',
             'ciudad',
             'estado',
             // Otros encabezados
