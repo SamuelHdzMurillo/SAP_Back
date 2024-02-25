@@ -8,27 +8,11 @@ use Carbon\Carbon;
 
 class GoalSectionController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        // Obtener la fecha de la solicitud
-        $requestedDate = $request->input('start_date');
-
-        // Filtrar por fecha de inicio y fecha de terminación si se proporcionan en la solicitud
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        $query = GoalSection::with(['section.promoteds' => function ($query) use ($startDate, $endDate, $requestedDate) {
-            // Aplicar filtro de fecha en la relación
-            if ($startDate && $endDate) {
-                $query->whereBetween('date_column', [Carbon::parse($startDate), Carbon::parse($endDate)]);
-            } elseif ($requestedDate) {
-                $query->whereDate('date_column', '=', Carbon::parse($requestedDate)->format('Y-m-d'));
-            }
-        }]);
-
+        $query = GoalSection::with("section.promoteds");
         $goalsSection = $query->get()->map(function ($goalSection) {
-            // Conteo manual de promovidos
-            $promotedCount = $goalSection->section->promoteds->count();
+            $promotedCount = $goalSection->section->promoteds->whereBetween('created_at', [$goalSection->start_date, $goalSection->end_date])->count();
 
             return [
                 'id' => $goalSection->id,
