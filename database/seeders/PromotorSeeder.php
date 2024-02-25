@@ -48,6 +48,6 @@ class PromotorSeeder extends Seeder
         }
 
 
-        Promotor::factory(800)->create();
+        // Promotor::factory(800)->create();
     }
 }
