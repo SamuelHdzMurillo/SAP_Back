@@ -44,11 +44,11 @@ Route::post('/goals-district', [GoalDistrictController::class, 'store']);
 Route::put('/goals-district/{goalDistrict}', [GoalDistrictController::class, 'update']);
 Route::delete('/goals-district/{goalDistrict}', [GoalDistrictController::class, 'destroy']);
 
-Route::get('/goal-sections', [GoalSectionController::class, 'index']);
-Route::post('/goal-sections', [GoalSectionController::class, 'store']);
-Route::get('/goal-sections/{goalSection}', [GoalSectionController::class, 'show']);
-Route::put('/goal-sections/{goalSection}', [GoalSectionController::class, 'update']);
-Route::delete('/goal-sections/{goalSection}', [GoalSectionController::class, 'destroy']);
+Route::get('/goals-sections', [GoalSectionController::class, 'index']);
+Route::post('/goals-sections', [GoalSectionController::class, 'store']);
+Route::get('/goals-sections/{goalSection}', [GoalSectionController::class, 'show']);
+Route::put('/goals-sections/{goalSection}', [GoalSectionController::class, 'update']);
+Route::delete('/goals-sections/{goalSection}', [GoalSectionController::class, 'destroy']);
 
 
 Route::get('/superAdmins', [SuperAdminController::class, 'index'])->middleware('auth:sanctum');
