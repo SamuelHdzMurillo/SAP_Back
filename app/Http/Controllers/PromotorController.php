@@ -23,10 +23,6 @@ class PromotorController extends Controller
         if ($req->has('name')) {
             $query->where('name', 'like', '%' . $req->input('name') . '%');
         }
-
-        if ($req->filled('last_name')) {
-            $query->where('last_name', 'like', '%' . $req->input('last_name') . '%');
-        }
         if ($req->has('phone_number')) {
             $query->where('phone_number', 'like', '%' . $req->input('phone_number') . '%');
         }
