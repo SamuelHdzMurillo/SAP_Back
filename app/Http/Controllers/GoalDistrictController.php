@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 class GoalDistrictController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $query = GoalDistrict::with('district.sections.promoteds');
 
