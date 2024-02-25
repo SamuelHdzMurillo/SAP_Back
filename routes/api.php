@@ -111,6 +111,7 @@ Route::delete('/problems/{problem}', [ProblemController::class, 'destroy'])->mid
 Route::get('/catalog/municipal', [CatalogController::class, 'MunicipalSelect'])->middleware('auth:sanctum');
 Route::get('/municipals/{municipalId}/districts', [CatalogController::class, 'getDistrictsByMunicipal'])->middleware('auth:sanctum');
 Route::get('/districts/{districtId}/sections', [CatalogController::class, 'getSectionsByDistrict'])->middleware('auth:sanctum');
+Route::get('/catalog/promotors', [CatalogController::class, 'getPromotors'])->middleware('auth:sanctum');
 
 
 Route::get("/dashboard/promoteds-by-promotor", [PromotedController::class, 'getPromotedByPromotors'])->middleware('auth:sanctum');

@@ -10,6 +10,7 @@ use App\Models\District;
 use App\Models\Section;
 use App\Http\Resources\CatalogResource;
 use App\Models\Promoted;
+use App\Models\Promotor;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -43,6 +44,12 @@ class CatalogController extends Controller
     public function getUsers()
     {
         $users = Promoted::select("id as value", DB::raw("CONCAT(name, ' ', last_name) as label"))->get();
+        return CatalogResource::collection($users);
+    }
+
+    public function getPromotors()
+    {
+        $users = Promotor::select("id as value", DB::raw("CONCAT(name, ' ', position) as label"))->get();
         return CatalogResource::collection($users);
     }
 }
