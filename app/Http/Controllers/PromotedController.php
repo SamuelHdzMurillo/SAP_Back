@@ -23,6 +23,11 @@ class PromotedController extends Controller
     public function index(Request $req)
     {
         $query = Promoted::with('section', "promotor");
+        $auth = auth()->user();
+        // return $auth;
+        if (isset($auth->role) && $auth->role == "promotor") {
+            $query->where("promotor_id", $auth->id);
+        }
         if ($req->has('name')) {
             $query->where('name', 'like', '%' . $req->input('name') . '%');
         }
