@@ -14,6 +14,8 @@ use App\Http\Controllers\Auth\SuperAdminAuthController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\GoalDistrictController;
 use App\Http\Controllers\GoalSectionController;
+use App\Http\Controllers\PrioritySectionController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +31,9 @@ use App\Http\Controllers\GoalSectionController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/priority-sections', [PrioritySectionController::class, 'store']);
+Route::get('/priority-sections', [PrioritySectionController::class, 'index']);
 
 Route::post('/login', [SuperAdminAuthController::class, 'login']);
 Route::post('/logout', [SuperAdminAuthController::class, 'logout']);

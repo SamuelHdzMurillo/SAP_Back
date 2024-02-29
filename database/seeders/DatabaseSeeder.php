@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call([DistricSeeder::class]);
         $this->call([SectionSeeder::class]);
         $this->call([PromotorSeeder::class]);
-        //$this->call([PromotedSeeder::class]);
+        $this->call([PromotedSeeder::class]);
         // $this->call([ProblemSeeder::class]);
     }
 }
