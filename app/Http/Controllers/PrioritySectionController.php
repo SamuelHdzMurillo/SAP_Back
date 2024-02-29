@@ -16,6 +16,30 @@ class PrioritySectionController extends Controller
      * Display a listing of the resource.
      */
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'Name' => 'required|string',
+            'data' => 'required|array',
+        ]);
+
+        // Convertir el array a una cadena antes de almacenarlo
+        $dataAsString = json_encode($request->input('data'));
+
+        $prioritySection = PrioritySection::create([
+            'Name' => $request->input('Name'),
+            'data' => $dataAsString,
+        ]);
+
+        return response()->json(['message' => 'Priority section created successfully', 'priority_section' => [
+            'id' => $prioritySection->id,
+            'Name' => $prioritySection->Name,
+            'data' => $prioritySection->data,
+        ]], 201);
+    }
+
+
+
 
     public function index(Request $request)
     {
@@ -49,80 +73,5 @@ class PrioritySectionController extends Controller
         });
 
         return response()->json(['message' => 'Priority Sections retrieved successfully', 'data' => $transformedPrioritySections]);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'Name' => 'required|string',
-            'data' => 'required|array',
-        ]);
-
-        // Convertir el array a una cadena antes de almacenarlo
-        $dataAsString = json_encode($request->input('data'));
-
-        $prioritySection = PrioritySection::create([
-            'Name' => $request->input('Name'),
-            'data' => $dataAsString,
-        ]);
-
-        return response()->json(['message' => 'Priority section created successfully', 'data' => $prioritySection]);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(PrioritySection $prioritySection)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PrioritySection $prioritySection)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PrioritySection $prioritySection)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PrioritySection $prioritySection)
-    {
-        //
     }
 }
