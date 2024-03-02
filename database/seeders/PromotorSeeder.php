@@ -21,7 +21,7 @@ class PromotorSeeder extends Seeder
                 'email' => 'promotor1@example.com',
                 'phone_number' => '1111111111',
                 'position' => 'Promotor Position 1',
-                'profile_path' => '/path/to/promotor1.jpg',
+                'profile_path' => null,
                 'ine_path' => '/path/to/promotor1_ine.jpg',
 
                 'password' => Hash::make('securepassword1'),
@@ -33,7 +33,7 @@ class PromotorSeeder extends Seeder
                 'email' => 'promotor2@example.com',
                 'phone_number' => '2222222222',
                 'position' => 'Promotor Position 2',
-                'profile_path' => '/path/to/promotor2.jpg',
+                'profile_path' => null,
                 'ine_path' => '/path/to/promotor2_ine.jpg',
 
                 'password' => Hash::make('securepassword2'),

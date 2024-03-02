@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("email")->unique()->nullable();
             $table->string("phone_number")->unique()->nullable();
             $table->string("position");
-            $table->string("profile_path");
+            $table->string("profile_path")->nullable();
             $table->string("ine_path")->nullable();
             $table->string("username");
             $table->string('password');

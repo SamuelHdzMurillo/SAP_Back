@@ -35,8 +35,10 @@ class PromotedController extends Controller
             $query->where('name', 'like', '%' . $req->input('name') . '%');
         }
 
-        if ($req->has('section_id')) {
-            $query->where('number', 'like', '%' . $req->input('number') . '%');
+        if ($req->has('section')) {
+            $query->whereHas('section', function ($query) use ($req) {
+                $query->where('number', 'like', '%' . $req->input('section') . '%');
+            });
         }
 
         if ($req->has('last_name')) {

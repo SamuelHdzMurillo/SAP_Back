@@ -19,7 +19,7 @@ class SuperAdminsSeeder extends Seeder
                 'name' => 'Daniel',
                 'email' => 'daniel@example.com',
                 'phone_number' => '1234567890',
-                'profile_img_path' => '/path/to/daniel.jpg', // Asume una ruta de imagen ficticia
+                'profile_img_path' => null, // Asume una ruta de imagen ficticia
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'), // Utiliza una contraseña segura en producción
             ],
@@ -27,7 +27,7 @@ class SuperAdminsSeeder extends Seeder
                 'name' => 'Samuel',
                 'email' => 'samuel@example.com',
                 'phone_number' => '0987654321',
-                'profile_img_path' => '/path/to/samuel.jpg', // Asume una ruta de imagen ficticia
+                'profile_img_path' => null, // Asume una ruta de imagen ficticia
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'), // Utiliza una contraseña segura en producción
             ],
