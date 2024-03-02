@@ -24,7 +24,7 @@ class PromotedTemplateExport implements FromCollection, WithHeadings, ShouldAuto
             'numero_telefonico',
             'correo',
             'direccion',
-            'direccion',
+            'clave_electoral',
             'curp',
             'latitude',
             'longitude',
