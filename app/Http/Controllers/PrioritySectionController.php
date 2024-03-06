@@ -38,6 +38,19 @@ class PrioritySectionController extends Controller
         ]], 201);
     }
 
+    public function destroy($id)
+    {
+        try {
+            $prioritySection = PrioritySection::findOrFail($id);
+            $prioritySection->delete();
+
+            return response()->json(['message' => 'Registro eliminado correctamente'], 200);
+        } catch (\Exception $e) {
+            // Manejo de errores, puedes personalizarlo según tus necesidades
+            return response()->json(['error' => 'Error al eliminar el registro'], 500);
+        }
+    }
+
 
 
 

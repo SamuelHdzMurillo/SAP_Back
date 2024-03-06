@@ -34,6 +34,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/priority-sections', [PrioritySectionController::class, 'store']);
 Route::get('/priority-sections', [PrioritySectionController::class, 'index']);
+Route::delete('/priority-sections/{id}', [PrioritySectionController::class, 'destroy']);
+
 
 Route::post('/login', [SuperAdminAuthController::class, 'login']);
 Route::post('/logout', [SuperAdminAuthController::class, 'logout']);
