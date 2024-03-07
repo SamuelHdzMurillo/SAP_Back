@@ -31,12 +31,34 @@ class PrioritySectionController extends Controller
             'data' => $dataAsString,
         ]);
 
-        return response()->json(['message' => 'Priority section created successfully', 'priority_section' => [
+        // Transformar la respuesta para que coincida con el formato deseado
+        $data = json_decode($prioritySection->data); // Decodificar la cadena JSON en un array
+        $sectionInfo = Section::whereIn('id', $data)->pluck('number', 'id');
+
+        $promotedsCountBySection = Promoted::whereIn('section_id', $data)
+            ->select('section_id', DB::raw('count(*) as promoteds_count'))
+            ->groupBy('section_id')
+            ->get();
+
+        // Obtener la información solo para 'promoteds_by_priority_section'
+        $promotedsByPrioritySection = $promotedsCountBySection->map(function ($item) use ($sectionInfo) {
+            return [
+                'section_id' => $item->section_id,
+                'section_name' => $sectionInfo[$item->section_id],
+                'promoteds_count' => $item->promoteds_count,
+            ];
+        });
+
+        $transformedPrioritySection = [
             'id' => $prioritySection->id,
             'Name' => $prioritySection->Name,
             'data' => $prioritySection->data,
-        ]], 201);
+            'promoteds_by_priority_section' => $promotedsByPrioritySection,
+        ];
+
+        return response()->json(['message' => 'Priority section created successfully', 'priority_section' => $transformedPrioritySection], 201);
     }
+
 
     public function destroy($id)
     {

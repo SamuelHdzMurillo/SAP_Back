@@ -16,6 +16,7 @@ use App\Http\Controllers\GoalDistrictController;
 use App\Http\Controllers\GoalSectionController;
 use App\Http\Controllers\PrioritySectionController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SectionController;
 
 
 /*
@@ -37,12 +38,12 @@ Route::post('/priority-sections', [PrioritySectionController::class, 'store']);
 Route::get('/priority-sections', [PrioritySectionController::class, 'index']);
 Route::delete('/priority-sections/{id}', [PrioritySectionController::class, 'destroy']);
 
-Route::get('/admins', [AdminController::class, 'index']);
-Route::post('/admins', [AdminController::class, 'store']);
-Route::get('/admins/{admin}', [AdminController::class, 'show']);
-Route::put('/admins/{admin}', [AdminController::class, 'update']);
-Route::patch('/admins/{admin}/upload-image', [AdminController::class, 'uploadImage']);
-Route::delete('/admins/{admin}', [AdminController::class, 'destroy']);
+Route::get('/admins', [AdminController::class, 'index'])->middleware('auth:sanctum');
+Route::post('/admins', [AdminController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/admins/{admin}', [AdminController::class, 'show'])->middleware('auth:sanctum');
+Route::put('/admins/{admin}', [AdminController::class, 'update'])->middleware('auth:sanctum');
+Route::patch('/admins/{admin}/upload-image', [AdminController::class, 'uploadImage'])->middleware('auth:sanctum');
+Route::delete('/admins/{admin}', [AdminController::class, 'destroy'])->middleware('auth:sanctum');
 
 
 Route::post('/login', [SuperAdminAuthController::class, 'login']);
@@ -114,6 +115,12 @@ Route::get('/municipals/sections-with-promoved-count', [MunicipalController::cla
 
 
 Route::get('/districts/{id}', [DistrictController::class, 'show'])->middleware('auth:sanctum');
+Route::get('/districts/{districtId}/promoted-count', [DistrictController::class, 'getPromotedCountByDistrict'])->middleware('auth:sanctum');
+
+Route::get('/sections', [SectionController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/sections/{id}', [SectionController::class, 'show'])->middleware('auth:sanctum');
+Route::get('/sections/{id}/promoteds', [SectionController::class, 'getPromotedsBySection'])->middleware('auth:sanctum');
+Route::get('/sections/{id}/promoted-count', [SectionController::class, 'getPromotedCountBySection'])->middleware('auth:sanctum');
 
 Route::get('/problems', [ProblemController::class, 'index'])->middleware('auth:sanctum'); // Listar todos los problemas
 Route::post('/problems', [ProblemController::class, 'store'])->middleware('auth:sanctum'); // Crear un nuevo problema

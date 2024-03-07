@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Section;
+use App\Models\Promoted;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -13,54 +14,66 @@ class SectionController extends Controller
      */
     public function index()
     {
-        //
+        // Obtener todos los registros de la tabla 'sections'
+        $sections = Section::all();
+
+        // Devolver los datos en formato JSON
+        return response()->json(['message' => 'Sections retrieved successfully', 'data' => $sections]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function getPromotedsBySection($sectionId)
     {
-        //
+        // Buscar la sección por ID con sus promovidos y la relación del municipio
+        $section = Section::with(['promoteds', 'district.municipal'])->find($sectionId);
+
+        // Si no se encuentra la sección, devuelve un error 404
+        if (!$section) {
+            return response()->json(['message' => 'Sección no encontrada.'], 404);
+        }
+
+        // Obtener el nombre del municipio
+        $municipalityName = $section->district->municipal->name;
+
+        // Ajustar la respuesta para incluir solo el nombre del municipio y los promovidos con información de la sección
+        $response = [
+            'municipality' => $municipalityName,
+            'promoteds' => $section->promoteds->map(function ($promoted) use ($section) {
+                // Incluir información de la sección en cada promovido
+                $promoted['section'] = [
+                    'id' => $section->id,
+                    'number' => $section->number,
+                ];
+                return $promoted;
+            }),
+        ];
+
+        // Devolver la respuesta en formato JSON
+        return response()->json(['message' => 'Promovidos de la sección recuperados exitosamente', 'data' => $response]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+
+
+
+    public function getPromotedCountBySection($sectionId)
     {
-        //
+        // Utilizar una consulta SQL para obtener el recuento de promovidos por el ID de la sección
+        $promotedCount = Promoted::where('section_id', $sectionId)->count();
+
+        return response()->json(['promoted_count' => $promotedCount]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Section $section)
+    public function show($id)
     {
-        //
-    }
+        // Buscar la sección por ID con sus relaciones
+        $section = Section::with(['district', 'promoteds', 'promotors'])->find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Section $section)
-    {
-        //
-    }
+        // Si no se encuentra la sección, devuelve un error 404
+        if (!$section) {
+            return response()->json(['message' => 'Sección no encontrada.'], 404);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Section $section)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Section $section)
-    {
-        //
+        // Devolver la sección y sus relaciones en formato JSON
+        return response()->json($section);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\District;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DistrictController extends Controller
 {
@@ -49,12 +50,17 @@ class DistrictController extends Controller
         return response()->json($district);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(District $district)
+    public function getPromotedCountByDistrict($districtId)
     {
-        //
+        // Utiliza una consulta SQL para obtener el recuento de promovidos por el ID del distrito
+        $promotedCount = DB::table('districts')
+            ->join('municipals', 'districts.municipal_id', '=', 'municipals.id')
+            ->join('sections', 'sections.district_id', '=', 'districts.id')
+            ->join('promoteds', 'promoteds.section_id', '=', 'sections.id')
+            ->where('districts.id', $districtId)
+            ->count();
+
+        return response()->json(['promoted_count' => $promotedCount]);
     }
 
     /**
