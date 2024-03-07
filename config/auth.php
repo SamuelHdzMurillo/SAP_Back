@@ -48,6 +48,10 @@ return [
             'driver' => 'session', // o 'token' si estás usando tokens
             'provider' => 'promotors',
         ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins', // El nombre del proveedor de usuarios asociado a este guard
+        ],
     ],
 
     /*
@@ -81,6 +85,10 @@ return [
         'promotors' => [
             'driver' => 'eloquent',
             'model' => App\Models\Promotor::class,
+        ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class, // Modelo de tu usuario administrador
         ],
 
 

@@ -35,6 +35,15 @@ class SuperAdminAuthController extends Controller
             return response()->json(['token' => $token, 'user_type' => 'promotor', 'user' => $userData], 200);
         }
 
+        if (Auth::guard('admin')->attempt($request->only('email', 'password'))) {
+            $user = Auth::guard('admin')->user();
+            $token = $user->createToken('AdminToken')->plainTextToken;
+            $userData = $user->toArray();
+
+            return response()->json(['token' => $token, 'user_type' => 'admin', 'user' => $userData], 200);
+        }
+
+
         throw ValidationException::withMessages([
             'email' => ['Las credenciales son incorrectas.'],
         ]);
@@ -44,7 +53,7 @@ class SuperAdminAuthController extends Controller
     {
         // Aquí necesitas lógica para manejar el logout dependiendo del tipo de usuario
         // Por ejemplo, puedes usar un campo en la petición para determinar el tipo de usuario
-        $userType = $request->input('user_type', 'superadmin');
+        $userType = $request->input('user_type', 'superadmin', 'admin');
         Auth::guard($userType)->logout();
 
         return response()->json(['message' => 'Logged out successfully'], 200);

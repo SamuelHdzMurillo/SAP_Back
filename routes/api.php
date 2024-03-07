@@ -15,6 +15,7 @@ use App\Http\Controllers\MapController;
 use App\Http\Controllers\GoalDistrictController;
 use App\Http\Controllers\GoalSectionController;
 use App\Http\Controllers\PrioritySectionController;
+use App\Http\Controllers\AdminController;
 
 
 /*
@@ -35,6 +36,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/priority-sections', [PrioritySectionController::class, 'store']);
 Route::get('/priority-sections', [PrioritySectionController::class, 'index']);
 Route::delete('/priority-sections/{id}', [PrioritySectionController::class, 'destroy']);
+
+Route::get('/admins', [AdminController::class, 'index']);
+Route::post('/admins', [AdminController::class, 'store']);
+Route::get('/admins/{admin}', [AdminController::class, 'show']);
+Route::put('/admins/{admin}', [AdminController::class, 'update']);
+Route::patch('/admins/{admin}/upload-image', [AdminController::class, 'uploadImage']);
+Route::delete('/admins/{admin}', [AdminController::class, 'destroy']);
 
 
 Route::post('/login', [SuperAdminAuthController::class, 'login']);
