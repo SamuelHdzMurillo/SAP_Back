@@ -133,15 +133,23 @@ class PromotedController extends Controller
         } elseif ($filter == 'month') {
             $start = Carbon::now()->startOfMonth();
             $end = Carbon::now()->endOfMonth();
+        } elseif ($filter == 'day') {
+            $start = Carbon::now()->startOfDay();
+            $end = Carbon::now()->endOfDay();
+        } else {
+            $start = Carbon::now()->subYear()->startOfYear();
+            $end = Carbon::now();
         }
+
         if (isset($start) && isset($end)) {
-            $promoteds_count = Promoted::where("created_at", ">=", $start)->where("created_at", "<=", $end)->count();
+            if ($filter == 'week' || $filter == 'month' || $filter == 'day') {
+                $promoteds_count = Promoted::whereBetween('created_at', [$start, $end])->count();
+            } else {
+                $promoteds_count = Promoted::count();
+            }
         } else {
             $promoteds_count = Promoted::count();
         }
-
-
-
 
         return response()->json(['promoteds_count' => $promoteds_count]);
     }
