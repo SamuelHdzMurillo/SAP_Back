@@ -6,6 +6,7 @@ use App\Http\Resources\PromotorResource;
 use App\Models\Promotor;
 use App\Models\Section;
 use App\Models\Municipal;
+use App\Models\Promoted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 

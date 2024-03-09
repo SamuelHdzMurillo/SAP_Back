@@ -15,11 +15,33 @@ class ProblemController extends Controller
      *
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $req)
     {
         // Obtener todos los problemas
-        $problems = Problem::with("promoted.section")->paginate(10);
+        $query = Problem::with("promoted.section");
+        if ($req->has('title')) {
+            $query->where('title', 'like', '%' . $req->input('title') . '%');
+        }
 
+        if ($req->has('section_number')) {
+            $query->whereHas('promoted', function ($query) use ($req) {
+                $query->whereHas('section', function ($query) use ($req) {
+                    $query->where('number', 'like', '%' . $req->input('section_number') . '%');
+                });
+            });
+        }
+        if ($req->has('promoted_name')) {
+            $nameParts = explode(' ', $req->input('promoted_name'));
+            $query->whereHas('promoted', function ($query) use ($nameParts) {
+                foreach ($nameParts as $namePart) {
+                    $query->where(function ($query) use ($namePart) {
+                        $query->where('name', 'like', '%' . $namePart . '%')
+                            ->orWhere('last_name', 'like', '%' . $namePart . '%');
+                    });
+                }
+            });
+        }
+        $problems = $query->paginate(10);;
         // Devolver los datos en formato JSON
         return ProblemResource::collection($problems);
     }
