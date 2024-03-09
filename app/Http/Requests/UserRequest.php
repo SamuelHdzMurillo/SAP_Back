@@ -23,8 +23,8 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:super_admins',
-            'phone_number' => 'required|numeric',
+            'email' => 'required|email|unique:super_admins|unique:admins',
+            'phone_number' => 'required|numeric|unique:super_admins|unique:admins',
             'profile_img_path' => 'image|nullable|max:1999',
             'password' => 'required'
         ];
