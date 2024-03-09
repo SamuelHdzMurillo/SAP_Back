@@ -70,6 +70,18 @@ class MunicipalController extends Controller
         return response()->json($municipals);
     }
 
+    public function countPromovedsInMunicipal($municipalId)
+    {
+        $count = DB::table('promoteds')
+            ->join('sections', 'promoteds.section_id', '=', 'sections.id')
+            ->join('districts', 'sections.district_id', '=', 'districts.id')
+            ->join('municipals', 'districts.municipal_id', '=', 'municipals.id')
+            ->where('municipals.id', '=', $municipalId)
+            ->count();
+
+        return response()->json(['promoted_count' => $count]);
+    }
+
     public function countPromovedsInDistrict($municipalId, $districtId)
     {
         $count = DB::table('promoteds')
@@ -229,9 +241,10 @@ class MunicipalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Municipal $municipal)
+    public function show($id)
     {
-        //
+        $municipal = Municipal::find($id);
+        return response()->json($municipal);
     }
 
     /**

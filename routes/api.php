@@ -112,11 +112,12 @@ Route::get('/municipals/sections/promoveds/count', [MunicipalController::class, 
 Route::get('/municipals/sections/promoveds/count-by-date', [MunicipalController::class, 'countPromovedsInSectionsByDate'])->middleware('auth:sanctum');
 Route::get('/municipals/districts/promoveds/count-by-date', [MunicipalController::class, 'countPromovedsInDistrictsByDate'])->middleware('auth:sanctum');
 Route::get('/municipals/sections-with-promoved-count', [MunicipalController::class, 'sectionsWithPromovedCount'])->middleware('auth:sanctum');
-
+Route::get("/municipal/{id}", [MunicipalController::class, 'show'])->middleware('auth:sanctum');
 
 Route::get('/districts/{id}', [DistrictController::class, 'show'])->middleware('auth:sanctum');
 Route::get("districts", [DistrictController::class, 'index'])->middleware('auth:sanctum');
 Route::get('/districts/{districtId}/promoted-count', [DistrictController::class, 'getPromotedCountByDistrict'])->middleware('auth:sanctum');
+Route::get('/municipal/{municipalId}/promoted-count', [MunicipalController::class, 'countPromovedsInMunicipal'])->middleware('auth:sanctum');
 
 Route::get('/sections', [SectionController::class, 'index'])->middleware('auth:sanctum');
 Route::get('/sections/{id}', [SectionController::class, 'show'])->middleware('auth:sanctum');
