@@ -40,6 +40,11 @@ class PromotedController extends Controller
                 $query->where('number', 'like', '%' . $req->input('section') . '%');
             });
         }
+        if ($req->has('section_id')) {
+            $query->whereHas('section', function ($query) use ($req) {
+                $query->where('id',  $req->input('section_id'));
+            });
+        }
         if ($req->has("district_id")) {
             $query->whereHas("section", function ($query) use ($req) {
                 $query->whereHas("district", function ($query) use ($req) {

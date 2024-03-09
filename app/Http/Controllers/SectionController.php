@@ -15,7 +15,7 @@ class SectionController extends Controller
     public function index()
     {
         // Obtener todos los registros de la tabla 'sections'
-        $sections = Section::all();
+        $sections = Section::with(['district', 'promoteds', 'promotors'])->get();
 
         // Devolver los datos en formato JSON
         return response()->json(['message' => 'Sections retrieved successfully', 'data' => $sections]);
@@ -66,7 +66,7 @@ class SectionController extends Controller
     public function show($id)
     {
         // Buscar la sección por ID con sus relaciones
-        $section = Section::with(['district', 'promoteds', 'promotors'])->find($id);
+        $section = Section::with(['district', "district.municipal", 'promoteds'])->find($id);
 
         // Si no se encuentra la sección, devuelve un error 404
         if (!$section) {
