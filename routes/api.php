@@ -115,6 +115,7 @@ Route::get('/municipals/sections-with-promoved-count', [MunicipalController::cla
 
 
 Route::get('/districts/{id}', [DistrictController::class, 'show'])->middleware('auth:sanctum');
+Route::get("districts", [DistrictController::class, 'index'])->middleware('auth:sanctum');
 Route::get('/districts/{districtId}/promoted-count', [DistrictController::class, 'getPromotedCountByDistrict'])->middleware('auth:sanctum');
 
 Route::get('/sections', [SectionController::class, 'index'])->middleware('auth:sanctum');

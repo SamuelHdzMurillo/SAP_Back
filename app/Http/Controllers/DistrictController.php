@@ -6,15 +6,64 @@ use App\Models\District;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
 
 class DistrictController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // Obtener todos los distritos con sus relaciones paginados
+        $query = District::with(['municipal', 'sections']);
+
+        if ($request->has("number")) {
+            $query->where("number", "LIKE", "%$request->number%");
+        }
+
+        if ($request->has("municipal")) {
+            $query->whereHas("municipal", function ($query) use ($request) {
+                $query->where("name", "LIKE", "%$request->municipal%");
+            });
+        }
+
+        $districts = $query->paginate(10);
+
+        // Crear una colección para almacenar los datos de cada distrito
+        $data = collect();
+
+        // Iterar sobre cada distrito y obtener la cantidad de secciones
+        foreach ($districts as $district) {
+            $sectionCount = $district->sections->count();
+
+            // Crear un array con los datos del distrito, la cantidad de secciones y el municipio
+            $districtData = [
+                'key' => $district->id,
+                'id' => $district->id,
+                'number' => $district->number,
+                'section_count' => $sectionCount,
+                'municipal' => $district->municipal->name
+            ];
+
+            // Agregar los datos del distrito a la colección
+            $data->push($districtData);
+        }
+
+        // Agregar la información de paginación al data
+        $data = $data->toArray();
+        $dataF['data'] = $data;
+        $dataF['pagination'] = [
+            'total' => $districts->total(),
+            'per_page' => $districts->perPage(),
+            'current_page' => $districts->currentPage(),
+            'last_page' => $districts->lastPage(),
+            'from' => $districts->firstItem(),
+            'to' => $districts->lastItem()
+        ];
+
+        // Devolver los datos al front en formato JSON
+        return response()->json($dataF);
     }
 
     /**
