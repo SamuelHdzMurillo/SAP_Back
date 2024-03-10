@@ -273,7 +273,7 @@ class PromotorController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'email' => 'required|email|unique:promotors,email,' . $id,
-            'phone_number' => 'required|unique:promotors',
+            'phone_number' => 'required|unique:promotors,phone_number,' . $id,
             'position' => 'required',
             'profile_path' => 'required',
             'ine_path' => 'required',
