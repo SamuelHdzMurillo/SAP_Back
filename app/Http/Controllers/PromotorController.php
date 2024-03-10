@@ -212,7 +212,7 @@ class PromotorController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'email' => 'required|email|unique:promotors',
-            'phone_number' => 'required',
+            'phone_number' => 'required|unique:promotors',
             'position' => 'required',
             'password' => 'required|confirmed',
             'profile_path' => 'image|nullable|max:1999', // Asegúrate de que el archivo sea una imagen
