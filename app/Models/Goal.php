@@ -13,6 +13,8 @@ class Goal extends Model
         'goalName',
         'goalValue',
         'municipal_id',
+        'start_date',
+        'end_date',
     ];
 
     /**

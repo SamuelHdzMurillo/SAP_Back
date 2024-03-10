@@ -4,34 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Models\Goal;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class GoalController extends Controller
 {
+    // Asegúrate de importar la clase Carbon
+
     public function index()
     {
-        $goals = Goal::with(['municipal' => function ($query) {
-            $query->with(['districts.sections.promoteds']);
-        }])->get()->map(function ($goal) {
-            // Conteo manual de promovidos
-            $promotedCount = 0;
-            foreach ($goal->municipal->districts as $district) {
-                foreach ($district->sections as $section) {
-                    $promotedCount += $section->promoteds->count();
-                }
-            }
+        $query = Goal::with(['municipal.districts.sections.promoteds']);
+
+        $goals = $query->get()->map(function ($goal) {
+            // Conteo manual de promovidos con filtro por fecha
+            $promotedCount = $goal->municipal->districts->flatMap(function ($district) use ($goal) {
+                return $district->sections->flatMap(function ($section) use ($goal) {
+                    return $section->promoteds->filter(function ($promoted) use ($goal) {
+                        return Carbon::parse($promoted->created_at)->between($goal->start_date, $goal->end_date);
+                    });
+                });
+            })->count();
 
             return [
                 'id' => $goal->id,
                 'municipal_name' => $goal->municipal->name,
-                'promoted_count' => $promotedCount,  // Nombre del municipio
-                'goal_name' => $goal->goalName,            // Nombre de la meta
-                'goal_value' => $goal->goalValue,          // Valor de la meta
-                // Total de promovidos por municipio ajustado
+                'promoted_count' => $promotedCount,
+                'goal_name' => $goal->goalName,
+                'goal_value' => $goal->goalValue,
             ];
         });
 
         return response()->json(['goals' => $goals]);
     }
+
 
 
 
@@ -41,7 +45,9 @@ class GoalController extends Controller
         $validatedData = $request->validate([
             'goalName' => 'required|max:255',
             'goalValue' => 'required|integer',
-            'municipal_id' => 'required|exists:municipals,id'
+            'municipal_id' => 'required|exists:municipals,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
         ]);
 
         // Crear un nuevo objetivo con los datos validados
@@ -55,15 +61,21 @@ class GoalController extends Controller
             }
         }
 
-        // Devolver la respuesta con el mensaje, los detalles del objetivo creado y el conteo de promovidos
-        return response()->json(['message' => 'Goal created successfully', 'goal' => [
-            'id' => $goal->id,
-            'municipal_name' => $goal->municipal->name,
-            'promoted_count' => $promotedCount,
-            'goal_name' => $goal->goalName,
-            'goal_value' => $goal->goalValue,
-        ]], 201);
+        // Devolver la respuesta JSON con el mensaje, los detalles del objetivo creado y el conteo de promovidos
+        return response()->json([
+            'message' => 'Goal created successfully',
+            'goal' => [
+                'id' => $goal->id,
+                'municipal_name' => $goal->municipal->name,
+                'promoted_count' => $promotedCount,
+                'goal_name' => $goal->goalName,
+                'goal_value' => $goal->goalValue,
+                'start_date' => $goal->start_date,
+                'end_date' => $goal->end_date,
+            ]
+        ], 201);
     }
+
 
 
 

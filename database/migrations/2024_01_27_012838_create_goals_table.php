@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string("goalName");
             $table->integer("goalValue");
+            $table->timestamp("start_date")->nullable();
+            $table->timestamp("end_date")->nullable();
             $table->foreignId("municipal_id")->constrained();
             $table->timestamps();
         });
