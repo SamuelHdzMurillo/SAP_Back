@@ -51,7 +51,7 @@ class GoalSectionController extends Controller
         // Devolver la respuesta con el mensaje, los detalles del objetivo de sección creado y el conteo de promovidos
         return response()->json(['message' => 'Goal Section created successfully', 'goal' => [
             'id' => $goalSection->id,
-            'section_name' => $goalSection->section->number,
+            'municipal_name' => $goalSection->section->number,
             'promoted_count' => $promotedCount,
             'goal_name' => $goalSection->goalName,
             'goal_value' => $goalSection->goalValue,
