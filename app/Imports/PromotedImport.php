@@ -66,7 +66,7 @@ class PromotedImport implements ToModel, WithHeadingRow
             'last_name'     => $row['apellidos'],
             'phone_number'  => $row['numero_telefonico'],
             'email'         => $row['correo'],
-            'adress'        => $row['direccion'],
+            'adress'        => $row['direccion_calles_num_de_casa'],
             'electoral_key' => $row['clave_electoral'],
             'curp'          => $row['curp'],
             'latitude'      => $latitude,

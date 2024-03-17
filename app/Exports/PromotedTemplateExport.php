@@ -29,7 +29,7 @@ class PromotedTemplateExport implements FromCollection, WithHeadings, ShouldAuto
             'section',
             'ciudad',
             'estado',
-            'direccion',
+            'direccion_calles_num_de_casa',
             'clave_electoral',
             'curp',
 
