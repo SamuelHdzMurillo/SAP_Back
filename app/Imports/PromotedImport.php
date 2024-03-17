@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 class PromotedImport implements ToModel, WithHeadingRow
 {
     protected string $promotorId;
+    protected array $processedRows = [];
 
     public function __construct(string $promotorId)
     {
@@ -22,9 +23,32 @@ class PromotedImport implements ToModel, WithHeadingRow
      * @param array $row
      *
      * @return \Illuminate\Database\Eloquent\Model|null
+     * 
+     * 
      */
+
     public function model(array $row)
     {
+
+
+        $rowData = serialize($row);
+        if (in_array($rowData, $this->processedRows)) {
+            return null; // Ignora la fila si ya ha sido procesada
+        }
+
+        // Verifica si hay un registro existente en la base de datos con los mismos datos
+        $existingPromoted = Promoted::where('name', $row['nombre'])
+            ->where('last_name', $row['apellidos'])
+            ->where('phone_number', $row['numero_telefonico'])
+            ->exists();
+
+        if ($existingPromoted) {
+            $this->duplicateRecords[] = $row; // Agrega el registro duplicado al array
+            return null; // Ignora el registro duplicado
+        }
+
+        // Agrega esta fila a los datos procesados para evitar duplicados
+        $this->processedRows[] = serialize($row);
         // Verificar si los datos necesarios para la dirección están presentes
         $hasAddressData = isset($row['numero_ext']) && isset($row['colonia']) && isset($row['ciudad']) && isset($row['estado']);
 
@@ -77,5 +101,9 @@ class PromotedImport implements ToModel, WithHeadingRow
             'section_id'    => $section->id, // Usar el ID de la sección encontrada
             'promotor_id'   => $this->promotorId,
         ]);
+    }
+    public function getDuplicateRecords()
+    {
+        return $this->duplicateRecords;
     }
 }
