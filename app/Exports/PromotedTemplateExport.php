@@ -23,17 +23,17 @@ class PromotedTemplateExport implements FromCollection, WithHeadings, ShouldAuto
             'apellidos',
             'numero_telefonico',
             'correo',
-            'direccion',
-            'clave_electoral',
-            'curp',
-            'latitude',
-            'longitude',
             'colonia',
             'codigo_postal',
             'numero_ext',
             'section',
             'ciudad',
             'estado',
+            'direccion',
+            'clave_electoral',
+            'curp',
+
+
             // Otros encabezados
         ];
     }
@@ -44,20 +44,38 @@ class PromotedTemplateExport implements FromCollection, WithHeadings, ShouldAuto
         {
             // Estilos personalizados
             return [
-                'A1:O1' => [
+                'A1:M1' => [
                     'font' => [
                         'bold' => true,
-                        'color' => ['rgb' => 'FFFFFF'], // Color de texto blanco
+                        'color' => ['rgb' => 'FFFFF'], // Color de texto rojo
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'startColor' => ['rgb' => '3498db'], // Color de fondo azul
+                        'startColor' => ['rgb' => 'FFFFFF'], // Color de fondo blanco
                     ],
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
                             'color' => ['rgb' => '000000'], // Color del borde negro
                         ],
+                    ],
+                ],
+                'A1:C1' => [
+                    'font' => [
+                        'bold' => true,
+                        'color' => ['rgb' => 'FF0000'], // Color de texto rojo
+                    ],
+                ],
+                'E1:H1' => [
+                    'font' => [
+                        'bold' => true,
+                        'color' => ['rgb' => 'FF0000'], // Color de texto rojo
+                    ],
+                ],
+                'K1:K1' => [
+                    'font' => [
+                        'bold' => true,
+                        'color' => ['rgb' => 'FF0000'], // Color de texto rojo
                     ],
                 ],
             ];
