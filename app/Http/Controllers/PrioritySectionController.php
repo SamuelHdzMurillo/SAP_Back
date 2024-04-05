@@ -99,6 +99,9 @@ class PrioritySectionController extends Controller
                 ];
             });
 
+            // Ordenar los valores dentro del array 'promoteds_by_priority_section' por 'section_name'
+            $promotedsByPrioritySection = $promotedsByPrioritySection->sortBy('section_name')->values()->all();
+
             return [
                 'id' => $prioritySection->id,
                 'Name' => $prioritySection->Name,
